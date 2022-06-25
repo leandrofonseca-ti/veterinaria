@@ -1,0 +1,261 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/pages/user.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/vendor/bootstrap-select/bootstrap-select.min.css")" />
+    @*<link rel="stylesheet" href="@Url.Content("~/Content/css/separate/vendor/select2.min.css")" />*@
+
+
+    @*@Styles.Render("~/Content/fileupload/css/bootstrap.min.css")*@
+    @*@Styles.Render("~/Content/fileupload/css/style.css")*@
+    @Styles.Render("~/Content/fileupload/css/jquery.fileupload.css")
+}
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnId", Model.ID)
+@Html.Hidden("hdnPathUrlUser", Url.Content(Model.PathUrlUser))
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5 id="ltlTitle"></h5>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action("Index","Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="@Url.Action("Index","User", new { Area = "Administracao" })" id="controllerName"></a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+
+
+    </div>
+
+
+    <div class="card-block">
+
+        <div class="alert alert-danger alert-border-left alert-close alert-dismissible fade" role="alert" id="msgError">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Nome</label>
+                    <div class="form-label">
+                        <input name="txtNome" id="txtNome"
+                               type="text"
+                               placeholder="Nome"
+                               class="form-control">
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label class="form-label">Sobrenome</label>
+                    <input name="txtSobreNome" id="txtSobreNome"
+                           type="text"
+                           placeholder="Sobrenome"
+                           class="form-control">
+                </fieldset>
+                <fieldset class="form-group">
+                    <label class="form-label">Perfil</label>
+                    <select id="drpPerfil" name="drpPerfil" class="select2" multiple="multiple">
+                        <option value="">:: Selecione ::</option>
+                        @{
+                            var list = (List<SelectListItem>)ViewData["ListPerfil"];
+                            foreach (var item in list)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </fieldset>
+
+                @*<fieldset class="form-group">
+                        <label class="form-label">Empresa</label>
+                        <select id="drpEmpresa" name="drpEmpresa" class="select2">
+                            <option value="">:: Selecione ::</option>
+                            @{
+                                var listEmpresa = (List<SelectListItem>)ViewData["ListEmpresa"];
+                                foreach (var item in listEmpresa)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </fieldset>*@
+
+                <fieldset class="form-group">
+                    <label class="form-label">Empresas <small>(multiplas empresa BETA)</small></label>
+                    <select id="drpEmpresas" name="drpEmpresas" class="select2" multiple="multiple">
+                        <option value="">:: Selecione ::</option>
+                        @{
+                            var listEmp = (List<SelectListItem>)ViewData["ListEmpresa"];
+                            foreach (var item in listEmp)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </fieldset>
+
+
+                <fieldset class="form-group">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="checkbox">
+                        <input type="checkbox" id="chkAtivo" name="chkAtivo">
+                        <label for="chkAtivo">Ativo</label>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">E-mail</label>
+                    <input name="txtEmail" id="txtEmail"
+                           type="text"
+                           placeholder="E-mail"
+                           class="form-control">
+                </fieldset>
+
+
+                @*<fieldset class="form-group">
+                        <label class="form-label">Usuário</label>
+                        <input name="txtUsuario" id="txtUsuario"
+                               type="text"
+                               placeholder="Usuário"
+                               class="form-control">
+                    </fieldset>*@
+
+
+                @if (String.IsNullOrEmpty(Model.ID) || Model.ID == "0")
+                {
+                    <fieldset class="form-group">
+                        <label class="form-label">Senha</label>
+                        <input name="txtSenha" id="txtSenha"
+                               type="password"
+                               placeholder="Senha"
+                               class="form-control">
+                    </fieldset>
+                }
+                else
+                {
+                    <div class="col-md-6">
+
+
+                        <fieldset class="form-group">
+                            <label class="form-label">&nbsp;</label>
+                            <div class="checkbox">
+                                <input type="checkbox" id="chkAlterarSenha" name="chkAlterarSenha">
+                                <label for="chkAlterarSenha">Alterar Senha</label>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form-group" id="fieldSenha" style="display:none">
+                            <label class="form-label">Senha</label>
+                            <input name="txtSenha" id="txtSenha"
+                                   type="password"
+                                   placeholder="Senha"
+                                   class="form-control">
+                        </fieldset>
+                    </div>
+                }
+
+                <fieldset class="form-group">
+                    <label class="form-label">Telefone</label>
+                    <input name="txtTelefone" id="txtTelefone"
+                           type="text"
+                           placeholder="Telefone"
+                           class="form-control">
+                </fieldset>
+                <fieldset class="form-group" id="areaFoto">
+                    <label class="form-label">Foto</label>
+                    <div class="col-md-12">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <img src="@Url.Content("~/Content/img/avatar-1-128.png")" id="uplImage" style="max-width:60px;max-height:60px;" alt="">&nbsp;&nbsp;
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+
+                                        <span class="btn btn-inline btn-primary btn-sm ladda-button fileinput-button">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                            <span>Adicionar</span>
+                                            <!-- The file input field used as target for the file upload widget -->
+                                            <input id="fileupload" type="file" name="files[]" />
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="btn btn-inline btn-danger btn-sm ladda-button fileinput-button" id="btnImageRemove">
+                                            <i class="glyphicon glyphicon-minus"></i>
+                                            <span>Remover</span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <div class="col-md-12">
+                        <!-- The global progress bar -->
+                        <div id="progress" class="progress">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                        <!-- The container for the uploaded files -->
+                        <div id="files" class="files"></div>
+                    </div>
+
+                </fieldset>
+
+
+                @*<fieldset class="form-group">
+                        <label class="form-label">Picture</label>
+                        <input name="txtNome" id="txtNome"
+                               type="text"
+                               placeholder="Nome"
+                               class="form-control">
+                    </fieldset>*@
+
+            </div>
+            <div class="col-md-12">
+                <fieldset class="form-group">
+                    <button type="button" id="btnBack" name="btnBack" class="btn btn-inline btn-secondary-outline">Voltar</button>
+
+                    <button type="button" id="btnSave" name="btnSave" class="btn btn-inline btn-primary-outline">Salvar</button>
+                </fieldset>
+
+            </div>
+
+        </div><!--.row-->
+
+    </div>
+</section>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/Administracao/User.Save.js?t=" + Guid.NewGuid())
+    @Scripts.Render("~/Content/js/lib/bootstrap-select/bootstrap-select.min.js")
+    @Scripts.Render("~/Content/js/lib/select2/select2.full.min.js")
+
+    @Scripts.Render("~/Content/fileupload/js/vendor/jquery.ui.widget.js")
+    @Scripts.Render("~/Content/fileupload/js/jquery.iframe-transport.js")
+    @Scripts.Render("~/Content/fileupload/js/jquery.fileupload.js")
+
+}

@@ -1,0 +1,115 @@
+﻿<div class="modal fade"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true"
+     id="modalTemplateSMSWhatsMail">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Gerenciamento de Mensagens</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" ng-style="{ display: !editModelo ? 'block' : 'none' }">
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <label class="form-label">Nome do Cliente</label>
+                            <input type="text" class="form-control" disabled="disabled" value="{{NomeClienteModelo}}" />
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row" ng-style="{ display: !editModelo ? 'block' : 'none' }">
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <label class="form-label">Modelos</label>
+                            <select class="form-control" ng-model="modeloSelecioanado" ng-change="AlteraModelo(modeloSelecioanado)">
+                                <option value="">:: Selecione ::</option>
+                                <option ng-repeat="modelo in modelos" ng-value="modelo">{{modelo.Titulo}}</option>
+                            </select>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <label class="form-label">Mensagem</label>
+                            <textarea class="form-control" id="TextoModelo" ng-model="TextoModelo" ng-disabled="!mostraTexto" rows="5" ng-blur="BlurText('TextoModelo')"></textarea>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <input type="text" name="hdnCopyPaste" id="hdnCopyPaste" value="" style="width: 150px; height:20px; border:0px; position:absolute; top:8px;left: 150px;" />
+                            <label class="form-label">Variáveis</label>
+                            <select class="form-control" ng-model="modeloVariaveis" ng-change="CopyParte(modeloVariaveis,'TextoModelo','hdnCopyPaste')">
+                                <option ng-repeat="variavel in Variaveis" value="{{variavel.key}}">{{variavel.value}}</option>
+                            </select>
+                            <small>
+                                <span class="font-icon font-icon-i-circle">
+                                    <span class="pl-1">
+                                        Posicione o cursor na mensagem onde você quer que a variável seja inserida.
+                                    </span>
+                                </span>
+                            </small>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <label class="form-label">Enviar por</label>
+                            <div class="checkbox-toggle"  id="chkEnviarEmail">
+                                <input type="checkbox" id="check-enviar-email" ng-model="EnvioPorEMail" ng-disabled="!mostraTexto">
+                                <label id="lblEmail" for="check-enviar-email">E-mail <!--<small>(Resposta para <b>{ {EmailTo}}</b>)</small>--></label>
+                            </div>
+                           
+                            <div class="checkbox-toggle" id="chkEnviarWhats">
+                                <input type="checkbox" id="check-enviar-whats" ng-model="EnvioPorWhats" ng-disabled="DisableWhats">
+                                <label id="lblWhats" for="check-enviar-whats">WhatsApp</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row" ng-style="{ display: editModelo ? 'block' : 'none' }">
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <label class="form-label">Título</label>
+                            <input type="text" class="form-control" id="TituloEditModelo" ng-model="TituloEditModelo" />
+                        </fieldset>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <label class="form-label">Mensagem</label>
+                            <textarea class="form-control" id="TextoEditModelo" ng-model="TextoEditModelo" rows="5" ng-blur="BlurText('TextoEditModelo')"></textarea>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <input type="text" name="hdnCopyPasteEdit" id="hdnCopyPasteEdit" value="" style="width: 150px; height:20px; border:0px; position:absolute; top:8px;left: 150px;" />
+                            <label class="form-label">Variáveis</label>
+                            <select class="form-control" ng-model="modeloVariaveis2" ng-change="CopyParte(modeloVariaveis2,'TextoEditModelo','hdnCopyPasteEdit')">
+                                <option ng-repeat="variavel in Variaveis" value="{{variavel.key}}">{{variavel.value}}</option>
+                            </select>
+                            <small>
+                                <span class="font-icon font-icon-i-circle">
+                                    <span class="pl-1">
+                                        Posicione o cursor na mensagem onde você quer que a variável seja inserida.
+                                    </span>
+                                </span>
+                            </small>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-warning" ng-if="btnEnviar" ng-click="InserirNovo(modeloSelecioanado)">Editar Modelo</button>
+                <button type="button" class="btn btn-sm btn-primary" ng-if="btnAdicionaNovo" ng-click="InserirNovo()">Adicionar Novo</button>
+                <button type="button" class="btn btn-sm btn-danger" ng-if="btnCancelar">Cancelar</button>
+                <button type="button" class="btn btn-sm btn-default" ng-if="btnSalvar" ng-click="VoltaModelo()">Voltar</button>
+                <button type="button" class="btn btn-sm btn-primary" ng-style="{ display: btnEnviar ? 'block' : 'none' }" ng-click="EnviarMensagemModelo()">Enviar</button>
+                <button type="button" class="btn btn-sm btn-primary" ng-style="{ display: btnSalvar ? 'block' : 'none' }" ng-click="SalvarModelo(modeloSelecioanado)">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->

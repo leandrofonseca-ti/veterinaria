@@ -1,0 +1,177 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+
+
+}
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnId", Model.ID)
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5 id="ltlTitle"></h5>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action(" Index","Dashboard", new { Area="" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="@Url.Action(" Index","Perfil", new { Area="Administracao" })" id="controllerName"></a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+
+
+
+    </div>
+
+
+    <div class="card-block">
+
+        <div class="alert alert-danger alert-border-left alert-close alert-dismissible fade" role="alert" id="msgError">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <form id="form-signin_v1" name="form-signin_v1" method="POST">
+                    <fieldset class="form-group">
+                        <label class="form-label">Nome</label>
+                        <input name="txtNome" id="txtNome"
+                               type="text"
+                               placeholder="Nome"
+                               class="form-control">
+                    </fieldset>
+
+
+                    <h5 class="m-t-lg with-border">Adicionar Menus</h5>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <fieldset class="form-group">
+                                <label class="form-label" for="drpMenu">Menu</label>
+                                <select id="drpMenu" name="drpMenu" class="form-control" style="width:200px">
+                                    <option value=''>:: Selecione ::</option>
+                                </select>
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-4">
+                            <fieldset class="form-group">
+                                <label class="form-label" for="drpRegra">Regra</label>
+
+                                <div class="input-group-append">
+
+                                    <select id="drpRegra" name="drpRegra" class="form-control" style="width:200px">
+                                        <option value=''>:: Selecione ::</option>
+                                    </select>
+                                    <button type="button" class="btn btn-inline btn-default" id="btnAddRegraModal">
+                                        +
+                                    </button>
+
+                                    <button type="button" class="btn btn-inline btn-primary" id="btnAddRegraTotal">
+                                        Adicionar
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="card-block">
+
+
+                        <table id="tbGrid" class="display table table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Menu</th>
+                                    <th>Regra</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+
+
+                    <fieldset class="form-group">
+
+                        <button type="button" id="btnBack" name="btnBack" class="btn btn-inline btn-secondary-outline">Voltar</button>
+
+                        <button type="button" id="btnSave" name="btnSave" class="btn btn-inline btn-primary-outline">Salvar</button>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div><!--.row-->
+
+    </div>
+</section>
+
+
+
+<div class="modal fade"
+     id="addRegraModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="addRegraModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Adicionar Regra</h4>
+            </div>
+            <div class="modal-body">
+
+                <fieldset class="form-group">
+                    <label class="form-label" for="drpRegraModal">Nova Regra</label>
+                    <div class="input-group-append">
+                        <select id="drpRegraModal" name="drpRegraModal" class="form-control" style="width:200px">
+                            <option value=''>:: Selecione ::</option>
+                            <option value='LISTAR'>Listar</option>
+                            <option value='VER_MENU'>Ver Menu</option>
+                            <option value='ATUALIZAR'>Atualizar</option>
+                            <option value='CADASTRAR'>Cadastrar</option>
+                            <option value='REMOVER'>Remover</option>
+                        </select>
+                    </div>
+
+
+                    <fieldset class="form-group">
+                        <label class="form-label" for="txtActionModal">Action</label>
+                        <input name="txtActionModal" id="txtActionModal"
+                               type="text"
+                               placeholder="Action"
+                               class="form-control">
+                    </fieldset>
+
+                </fieldset>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnSaveModalRegra">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+@section scripts {
+    @Scripts.Render("~/Scripts/Administracao/Perfil.Save.js?t=" + Guid.NewGuid())
+}
+

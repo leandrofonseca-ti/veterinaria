@@ -1,0 +1,1246 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+@section styles{
+    @Styles.Render("~/Content/jquery-ui.css")
+    @Styles.Render("~/Content/css/lib/jquery-minicolors/jquery.minicolors.css")
+    @Styles.Render("~/Content/css/separate/vendor/jquery.minicolors.min.css")
+    @Styles.Render("~/Content/fileupload/css/jquery.fileupload.css")
+    @Styles.Render("~/Content/css/separate/vendor/tags_editor.min.css")
+    @Styles.Render("~/Content/css/separate/pages/activity.min.css")
+    @Styles.Render("~/Content/css/lib/ion-range-slider/ion.rangeSlider.css")
+    @Styles.Render("~/Content/css/lib/ion-range-slider/ion.rangeSlider.skinHTML5.css")
+    @Styles.Render("~/Content/css/separate/vendor/bootstrap-daterangepicker.min.css")
+    @Styles.Render("~/Content/css/lib/clockpicker/bootstrap-clockpicker.min.css")
+    @Styles.Render("~/Content/css/lib/ion-range-slider/ion.rangeSlider.css")
+    @Styles.Render("~/Content/css/lib/ion-range-slider/ion.rangeSlider.skinHTML5.css")
+
+    <style>
+        #msgError {
+            display: none;
+            background-color: #ffe7e7;
+            padding: 20px;
+        }
+
+        #txtHistorico {
+            overflow-y: scroll;
+            height: 200px;
+            resize: none; /* Remove this if you want the user to resize the textarea */
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .error-field, .form-control-error {
+            border: 2px solid red;
+        }
+
+        .sizeComboText span.select2.select2-container.select2-container--default {
+            max-width: 90% !important;
+        }
+
+        .sizeComboText2 span.select2.select2-container.select2-container--default {
+            max-width: 80% !important;
+        }
+    </style>
+}
+
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnId", Model.ID)
+@Html.Hidden("hdnClinicaId")
+@*@Html.Hidden("hdnEmpresaId", Model.EmpresaId)*@
+@Html.Hidden("hdnMapPath", PortalVet.Data.Helper.Util.GetMapUpload())
+@Html.Hidden("hdnUrlPath", PortalVet.Data.Helper.Util.GetUrlUpload())
+
+
+@Html.Hidden("hdnPerfilClinicaId", PortalVet.Data.Helper.EnumAdminProfile.Clinica.GetHashCode())
+@Html.Hidden("hdnPerfilGerenteId", PortalVet.Data.Helper.EnumAdminProfile.Gerente.GetHashCode())
+@Html.Hidden("hdnPerfilLaudadorId", PortalVet.Data.Helper.EnumAdminProfile.Laudador.GetHashCode())
+
+@Html.Hidden("hdnPerfilId", PortalVet.Helper.SessionsAdmin.PerfilId)
+@Html.Hidden("hdnUsuarioExameId", PortalVet.Helper.SessionsAdmin.UsuarioId)
+
+@{
+
+    List<PortalVet.Models.ViewModelFoto> arquivos = (List<PortalVet.Models.ViewModelFoto>)ViewData["listArquivos"];
+}
+
+
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5 id="ltlTitle"></h5>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action("Index", "Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="#"> @Model.MenuNameSelected </a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+
+
+
+    </div>
+
+
+    <div class="card-block">
+
+
+
+
+
+        <section class="tabs-section">
+            <div class="tabs-section-nav tabs-section-nav-inline">
+                <ul class="nav" role="tablist" id="ulLista">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#tabs-4-tab-1" role="tab" data-toggle="tab">
+                            Formulário
+                        </a>
+                    </li>
+                    <li class="nav-item" id="liConfigAcessos" style="display:none">
+                        <a class="nav-link" href="#tabs-4-tab-2" role="tab" data-toggle="tab">
+                            Configurar acessos
+                        </a>
+                    </li>
+
+                </ul>
+            </div><!--.tabs-section-nav-->
+
+
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active show" id="tabs-4-tab-1">
+
+
+
+                    <div class="alert alert-danger alert-border-left alert-close alert-dismissible fade" role="alert" id="msgError">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                        <div id="msgErrorText">Preencha corretamente abaixo</div>
+                    </div>
+
+
+
+                    <div class="row" id="areaCodigo" style="display:none">
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Nº Exame <label style="font-size:20px;font-weight:bold" id="lblCodigo"></label></label>
+
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Situação<label style="font-size:20px;font-weight:bold" id="lblStatus"></label></label>
+                            </fieldset>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <fieldset class="form-group">
+                                <label class="form-label">Url para visualização do exame</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="txtUrlCopiar" readonly="readonly" placeholder="Veja aqui o link" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <span onclick="MODULO.CopiarLink()" style="cursor:pointer;">Copiar</span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <small>Copie este link caso queira enviar por SMS/WhatsApp</small>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Data do Exame</label>
+                                <input name="txtDataExame" id="txtDataExame"
+                                       type="text"
+                                       class="form-control form-control-sm data clsInput"
+                                       placeholder="dd/mm/yyyy">
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Horário do Exame</label>
+                                <input name="txtDataExameTime" id="txtDataExameTime"
+                                       type="text"
+                                       class="form-control form-control-sm timer clsInput"
+                                       placeholder="HH:mm">
+                            </fieldset>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Veterinário</label>
+                                <div class="form-label">
+                                    <input name="txtVeterinario" id="txtVeterinario"
+                                           type="text"
+                                           maxlength="100"
+                                           placeholder="Veterinário"
+                                           class="form-control clsInput">
+                                </div>
+                            </fieldset>
+                        </div>
+                        @*<div class="col-md-6">
+                                <fieldset class="form-group">
+                                    <label class="form-label">Proprietário</label>
+                                    <div class="form-label">
+                                        <input name="txtProprietario" id="txtProprietario"
+                                               type="text"
+                                               maxlength="100"
+                                               placeholder="Proprietátio"
+                                               class="form-control">
+                                    </div>
+                                </fieldset>
+                            </div>*@
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Idade</label>
+                                <div class="form-label">
+                                    <input name="txtIdade" id="txtIdade"
+                                           type="text"
+                                           maxlength="100"
+                                           placeholder="Idade"
+                                           class="form-control clsInput">
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Paciente</label>
+                                <div class="form-label">
+                                    <input name="txtPaciente" id="txtPaciente"
+                                           type="text"
+                                           maxlength="100"
+                                           placeholder="Paciente"
+                                           class="form-control clsInput">
+                                </div>
+                            </fieldset>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Espécie</label>
+                                <div class="form-label">
+                                    <input name="txtEspecieSelecao" id="txtEspecieSelecao"
+                                           type="text"
+                                           maxlength="100"
+                                           placeholder="Espécie"
+                                           class="form-control clsInput">
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Raça</label>
+                                <div class="form-label">
+                                    <input name="txtRacaSelecao" id="txtRacaSelecao"
+                                           type="text"
+                                           maxlength="100"
+                                           placeholder="Raça"
+                                           class="form-control clsInput">
+                                </div>
+                            </fieldset>
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <fieldset class="form-group">
+                                <label for="drpClinica" class="form-label">Clínica</label>
+                                <div class="input-group">
+                                    <select id="drpClinica" name="drpClinica" class="select2">
+                                        <option value="">:: Selecione ::</option>
+                                        @{
+                                            var listClinica = (List<SelectListItem>)ViewData["ListClinica"];
+                                            foreach (var item in listClinica)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </fieldset>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Proprietário (Nome)</label>
+                                <div class="form-label">
+                                    <input name="txtProprietarioNome" id="txtProprietarioNome"
+                                           type="text" readonly="readonly"
+                                           maxlength="100"
+                                           placeholder="Proprietário Nome"
+                                           class="form-control clsInput">
+                                </div>
+                            </fieldset>
+
+                            @*<fieldset class="form-group">
+                                    <label class="form-label">Proprietário</label>
+
+                                    <div class="input-group sizeComboText">
+
+                                        <select id="drpCliente" name="drpCliente" class="select2">
+                                            <option value="">:: Selecione ::</option>
+                                            @{
+                                                var listCliente = (List<SelectListItem>)ViewData["ListCliente"];
+                                                foreach (var item in listCliente)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-secondary btn-sm" id="btnOpenModalCliente" title="Adicionar" style="padding: 3px 13px 0px 11px;">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true" title="Adicionar"></span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </fieldset>*@
+                        </div>
+
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Proprietário (E-mail)</label>
+                                <div class="form-label">
+                                    <input name="txtProprietarioEmail" id="txtProprietarioEmail"
+                                           type="text" readonly="readonly"
+                                           maxlength="100"
+                                           placeholder="Proprietário E-mail"
+                                           class="form-control clsInput">
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-md-6">
+                            <fieldset class="form-group">
+                                <label class="form-label">Proprietário (Telefone)</label>
+                                <div class="form-label">
+                                    <input name="txtProprietarioTelefone" id="txtProprietarioTelefone"
+                                           type="text" readonly="readonly"
+                                           maxlength="100"
+                                           placeholder="Proprietário Telefone"
+                                           class="form-control clsInput">
+                                </div>
+                            </fieldset>
+                        </div>
+
+
+                        @*<div class="col-md-6">
+
+                                <fieldset class="form-group">
+                                    <label for="drpLaudador" class="form-label">Laudador</label>
+
+                                    <div class="input-group sizeComboText">
+
+                                        <select id="drpLaudador" name="drpLaudador" class="select2">
+                                            <option value="">:: Selecione ::</option>
+                                            @{
+                                                var listLaudador = (List<SelectListItem>)ViewData["ListLaudador"];
+                                                foreach (var item in listLaudador)
+                                                {
+                                                    <option value="@item.Value">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-secondary btn-sm" id="btnOpenModalLaudador" title="Adicionar" style="padding: 3px 13px 0px 11px;">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true" title="Adicionar"></span>
+                                            </button>
+
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>*@
+                    </div>
+
+                </div>
+
+                @Html.Hidden("hdnSituacaoId")
+                @*<div class="row">
+
+                        <div class="col-md-6">
+
+                            <fieldset class="form-group">
+                                <label for="drpSituacao" class="form-label">Situação</label>
+
+                                <div class="input-group">
+
+                                    <select id="drpSituacao" name="drpSituacao" class="select2">
+                                        <option value="">:: Selecione ::</option>
+                                        @{
+                                            var listSituacao = (List<SelectListItem>)ViewData["ListSituacao"];
+                                            foreach (var item in listSituacao)
+                                            {
+                                                <option value="@item.Value">@item.Text</option>
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                            </fieldset>
+
+                        </div>
+
+                    </div>*@
+
+
+
+                <div class="row">
+                    @{
+
+                        if (PortalVet.Helper.SessionsAdmin.PerfilId == PortalVet.Data.Helper.EnumAdminProfile.Administrador.GetHashCode()
+                            || PortalVet.Helper.SessionsAdmin.PerfilId == PortalVet.Data.Helper.EnumAdminProfile.Gerente.GetHashCode())
+                        {
+                            <div class="col-md-6">
+                                <fieldset class="form-group">
+                                    <label class="form-label">Forma de Pagamento</label>
+                                    <div class="form-label">
+                                        <input name="txtFormaPgto" id="txtFormaPgto"
+                                               type="text"
+                                               maxlength="100"
+                                               placeholder="Forma de Pagamento"
+                                               class="form-control clsInput">
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6">
+                                <fieldset class="form-group">
+                                    <label class="form-label">Valor</label>
+                                    <div class="form-label">
+                                        <input name="txtValor" id="txtValor"
+                                               type="text"
+                                               maxlength="100"
+                                               placeholder="Valor"
+                                               class="form-control clsInput">
+                                    </div>
+                                </fieldset>
+                            </div>
+
+                        }
+                    }
+
+                    <div class="col-md-12">
+                        <fieldset class="form-group">
+                            <label class="form-label">Histórico</label>
+                            <div class="form-label">
+                                <textarea name="txtHistorico" id="txtHistorico"
+                                          class="form-control"></textarea>
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+
+
+
+                </div>
+                <hr />
+                <div class="row mt-4">
+
+                    <div class="col-md-12" id="areaMensagensClinica">
+
+                        <section class="widget widget-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <article class="panel">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <a data-toggle="collapse" id="areaMensagemClickClinica" data-parent="#accordion" href="#collapseOneQst" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                        Informe suas dúvidas/sugestões
+                                    </a>
+                                </div>
+                                <div id="collapseOneQst" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+                                    <div class="panel-collapse-in">
+                                        <div class="col-md-12">
+                                            <fieldset class="form-group">
+                                                @*<label class="form-label">Mensagem</label>*@
+                                                <textarea name="editorQuestaoClinica" id="editorQuestaoClinica" class="form-control" rows="4"></textarea>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <fieldset class="form-group">
+
+                                                <button type="button" id="btnSalvarDuvidaClinica" name="btnSalvarDuvidaClinica" class="btn btn-sm btn-inline btn-warning-outline">Enviar mensagem</button>
+
+                                            </fieldset>
+                                        </div>
+
+                                        <div id="areaHistoricoDuvidasClinica">
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </article>
+                        </section>
+                    </div>
+
+
+
+                    <div class="col-md-12" id="areaMensagensLaudador">
+
+                        <section class="widget widget-accordion" id="accordionLaudador" role="tablist" aria-multiselectable="true">
+                            <article class="panel">
+                                <div class="panel-heading" role="tab" id="headingOneLaudador">
+                                    <a data-toggle="collapse" id="areaMensagemClickLaudador" data-parent="#accordionLaudador" href="#collapseOneQstLaudador" aria-expanded="false" aria-controls="collapseOneLaudador" class="collapsed">
+                                        Informe suas dúvidas/sugestões
+                                    </a>
+                                </div>
+                                <div id="collapseOneQstLaudador" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="headingOneLaudador" style="">
+                                    <div class="panel-collapse-in">
+                                        <div class="col-md-12">
+                                            <fieldset class="form-group">
+                                                @*<label class="form-label">Mensagem</label>*@
+                                                <textarea name="editorQuestaoLaudador" id="editorQuestaoLaudador" class="form-control" rows="4"></textarea>
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <fieldset class="form-group">
+
+                                                <button type="button" id="btnSalvarDuvidaLaudador" name="btnSalvarDuvidaLaudador" class="btn btn-sm btn-inline btn-warning-outline">Enviar mensagem</button>
+
+                                            </fieldset>
+                                        </div>
+
+                                        <div id="areaHistoricoDuvidasLaudador">
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </article>
+                        </section>
+                    </div>
+
+                    <div class="col-md-12" id="areaExameFinal">
+
+                        <section class="widget widget-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <article class="panel">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOnePdf" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                        Exame Final
+                                    </a>
+                                </div>
+                                <div id="collapseOnePdf" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+                                    <div class="panel-collapse-in">
+                                        <div class="col-md-6">
+                                            <fieldset class="form-group">
+                                                <label for="drpModelo" class="form-label">Modelo <small> (Carregar texto pré-definido)</small></label>
+
+                                                <div class="input-group">
+
+                                                    <select id="drpModelo" name="drpModelo" class="select2">
+                                                        <option value="">:: Selecione ::</option>
+                                                        @{
+                                                            var listModelo = (List<SelectListItem>)ViewData["ListModelo"];
+                                                            foreach (var item in listModelo)
+                                                            {
+                                                                <option value="@item.Value">@item.Text</option>
+                                                            }
+                                                        }
+                                                    </select>
+
+                                                </div>
+                                            </fieldset>
+
+                                        </div>
+                                        <div class="col-md-12">
+                                            <fieldset class="form-group">
+
+                                                <label class="form-label">Descrição</label>
+                                                <textarea name="editorTexto" id="editorTexto" class="editorTexto"></textarea>
+
+                                            </fieldset>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label">Assinatura</label>
+                                            <div class="form-label">
+                                                <select id="drpRodape" name="drpRodape" class="select2">
+                                                    <option value="">:: Selecione ::</option>
+                                                    @{
+                                                        var listRodape = (List<SelectListItem>)ViewData["ListRodape"];
+
+                                                        foreach (var item in listRodape)
+                                                        {
+                                                            <option value="@item.Value" @(item.Selected ? "selected='selected'" : "")>@item.Text</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </article>
+                        </section>
+                    </div>
+                    <div class="col-md-12" id="areaArquivos" style="display:none">
+
+
+                        <section class="widget widget-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <article class="panel">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOneImg" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                        Imagens
+
+                                    </a>
+                                </div>
+                                <div id="collapseOneImg" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+                                    <div class="panel-collapse-in">
+
+                                        <div class="col-md-12">
+
+                                            <fieldset class="form-group">
+                                                @*<label for="txtArquivos" class="form-label">Anexar arquivo(s)</label>*@
+                                                <div class="divControles">
+                                                    <div class="row uploadArquivos">
+                                                        <div class="col-sm-6">
+                                                            <div class="input-group mt-2 clsImages" onclick="FILECONTROL.OpenModalImage('@Url.Action("UploadFileControl", "Exame", new { @area = "Cadastro"})')">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="inputGroupPrepend"><i class="font-icon font-icon-clip"></i></span>
+                                                                </div>
+                                                                <input type="text" id="txtArquivos" name="txtArquivos" class="form-control form-control-sm" disabled readonly placeholder="Anexar arquivo(s)" aria-describedby="inputGroupPrepend" />
+                                                            </div>
+                                                            <div class="row-fluid">
+                                                                <div class="span6">
+                                                                    <div class="control-group">
+                                                                        <div class="controls">
+                                                                            <input type="hidden" id="hdnPathControl" value="@Url.Content("~/Cadastro/Exame")" />
+                                                                            <input type="hidden" id="hdnTotalFotos" value="0" />
+                                                                            <div class="list-group" id="listImages" style="list-style-type: none; margin-left: 0px !important">
+                                                                                @{
+                                                                                    var ct = 0;
+                                                                                    foreach (var file in arquivos)
+                                                                                    {
+                                                                                        ct++;
+                                                                                        <div class="list-group-item list-group-item-success mt-1">
+                                                                                            <div class="row">
+                                                                                                <div class="col-10 text-left">
+                                                                                                    @*<a href="javascript:;" data-id="@ct">*@
+                                                                                                    <a href="javascript:;" title="Edição de Imagem" data-id="@ct" onclick="FILECONTROL.OpenEditImage(this,'@Url.Content($"~/upload/exames/{Model.EmpresaId}/{Model.ID}/{file.OriginalFileName}")',@Model.EmpresaId,@Model.ID,'@file.OriginalFileName')">
+                                                                                                        <img id="picture_@ct" src="@Url.Content($"~/upload/exames/{Model.EmpresaId}/{Model.ID}/{file.OriginalFileName}")" style="height:100px;" />
+                                                                                                        @*<span class="mb-1" style="font-size: 11px;">&nbsp;@file.OriginalFileName</span>*@
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                                <div class="col-2">
+                                                                                                    <button type="button" class="btn btn-sm btn-inline btn-danger clsImages" title="remover" onclick="FILECONTROL.RemoveFile('@file.ID')"><i class="font-icon font-icon-del"></i></button>
+                                                                                                    <br />
+                                                                                                    @*<button type="button" class="btn btn-sm btn-inline btn-primary" title="visualizar" onclick="FILECONTROL.ViewFile('@Url.Content($"~/upload/exames/{Model.EmpresaId}/{Model.ID}/{file.OriginalFileName}")')"><i class="glyphicon glyphicon-search"></i></button>
+                                                                                                        <br />*@
+                                                                                                    <button type="button" class="btn btn-sm btn-inline btn-warning" title="download" onclick="FILECONTROL.DownFile('@Url.Content($"~/upload/exames/{Model.EmpresaId}/{Model.ID}/{file.OriginalFileName}")')"><i class="glyphicon glyphicon-download-alt"></i></button>
+                                                                                                    <br />
+                                                                                                    <button type="button" class="btn btn-sm btn-inline btn-secondary" title="zoom" onclick="FILECONTROL.ZoomFile('@Url.Content($"~/upload/exames/{Model.EmpresaId}/{Model.ID}/{file.OriginalFileName}")')"><i class="glyphicon glyphicon-zoom-in"></i></button>
+
+
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    }
+                                                                                }
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </article>
+                        </section>
+
+
+                    </div>
+                    <div class="col-md-12" id="areaHistoricoTab">
+
+
+                        <section class="widget widget-accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                            <article class="panel">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                        Histórico das Atividades
+
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+                                    <div class="panel-collapse-in" id="areaHistorico">
+
+
+                                    </div>
+                                </div>
+                            </article>
+
+                        </section>
+
+
+
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="row areaTextArea">
+                            <div class="col-md-12">
+                                <fieldset class="form-group">
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-12">
+                        <fieldset class="form-group">
+
+                            <button type="button" id="btnBackCriarExame" name="btnBackCriarExame" class="btn btn-inline btn-secondary-outline">Voltar</button>
+
+                            <button type="button" id="btnCriarExame" style="display:none" name="btnCriarExame" class="btn btn-inline btn-primary-outline">Salvar</button>
+
+                            <button type="button" id="btnCriarExameLaudador" style="display:none" name="btnCriarExameLaudador" class="btn btn-inline btn-warning-outline">Salvar (enviar para o Laudador)</button>
+
+                            <button type="button" id="btnCriarExameConcluir" style="display:none" name="btnCriarExameConcluir" class="btn btn-inline btn-success-outline">Concluir</button>
+
+
+
+                            <button type="button" id="btnRespostaAnaliseLaudador" style="display:none" name="btnRespostaAnaliseLaudador" class="btn btn-inline btn-primary-outline">Salvar</button>
+
+                            <button type="button" id="btnRespostaConcluirGerente" style="display:none" name="btnRespostaConcluirGerente" class="btn btn-inline btn-success-outline">Concluir ( enviar para Gerente )</button>
+
+
+
+
+                            <button type="button" id="btnRealizarAnalise" name="btnRealizarAnalise" style="display:none;float:right" class="btn btn-inline btn-success-outline">Realizar Laudo</button>
+
+                            <button type="button" id="btnLiberarAnalise" name="btnLiberarAnalise" style="display:none;float:right" class="btn btn-inline btn-danger-outline">Liberar Laudo</button>
+
+                            <label style="font-size:20px;font-weight:bold;display:none;float:right" id="lblTimer"></label>
+                        </fieldset>
+                    </div>
+                </div><!--.row-->
+
+            </div><!--.tab-pane-->
+            <div role="tabpanel" class="tab-pane fade" id="tabs-4-tab-2">
+
+                <div class="col-md-6">
+
+                    <fieldset class="form-group">
+                        <div class="dd" id="nestable">
+
+                        </div>
+                    </fieldset>
+                </div>
+
+            </div><!--.tab-pane-->
+            <div role="tabpanel" class="tab-pane fade" id="tabs-4-tab-3">Tab 3</div><!--.tab-pane-->
+            <div role="tabpanel" class="tab-pane fade" id="tabs-4-tab-4">Tab 4</div><!--.tab-pane-->
+            <div role="tabpanel" class="tab-pane fade" id="tabs-4-tab-5">Tab 5</div><!--.tab-pane-->
+            <div role="tabpanel" class="tab-pane fade" id="tabs-4-tab-6">Tab 6</div><!--.tab-pane-->
+    </div><!--.tab-content-->
+</section>
+
+</section>
+
+    </div>
+</section>
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalConfirm">
+    <div class="modal-dialog modal-lg" style="max-width: 600px !important;">
+        <div class="modal-content" style="width:600px !important;">
+
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmConvite">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+
+<div class="modal fade bd-example-modal-lg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalView">
+    <div class="modal-dialog modal-lg" style="max-width: 800px !important;">
+        <div class="modal-content" style="width:800px !important;">
+
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Visualização</h4>
+            </div>
+            <div class="modal-body" id="modalBodyView">
+                <div class="row">
+
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Nome</label>
+                            <div class="form-label">
+                                <label id="lblNome" class="form-control"></label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Sobrenome</label>
+                            <label id="lblSobreNome" class="form-control"></label>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">E-mail</label>
+                            <label id="lblEmail" class="form-control"></label>
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Usuário</label>
+                            <label id="lblUsuario" class="form-control"></label>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Estado</label>
+                            <label id="lblEstado" class="form-control"></label>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Cidade</label>
+                            <label id="lblCidade" class="form-control"></label>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">CRECI</label>
+                            <label id="lblCRECI" class="form-control"></label>
+                        </fieldset>
+
+
+                        <fieldset class="form-group">
+                            <label class="form-label">Foto</label>
+                            <div class="col-md-12">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <img id="imgFotoView" style="max-width:150px;max-height:150px;" alt="">&nbsp;&nbsp;
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Telefone 1</label>
+                            <label id="lblTelefone1" class="form-control"></label>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <label class="form-label">Telefone 2</label>
+                            <label id="lblTelefone2" class="form-control"></label>
+                        </fieldset>
+
+
+                        <fieldset class="form-group">
+                            <label class="form-label">Telefone 3</label>
+                            <label id="lblTelefone3" class="form-control"></label>
+                        </fieldset>
+
+
+                    </div>
+
+                    <div class="col-md-12">
+
+                        <fieldset class="form-group">
+                            <label class="form-label"><strong>Perfil (Fale mais sobre você, perfil de imóvel que trabalha, formação...)</strong></label>
+                            <label for="lblMensagem" class="col-sm-4 col-form-label"></label>
+                            <label id="lblMensagem" class="form-control"></label>
+                        </fieldset>
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalCadastroLaudador">
+    <div class="modal-dialog modal-lg" style="max-width: 800px !important;">
+        <div class="modal-content" style="width:800px !important;">
+
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Cadastrar Laudador</h4>
+            </div>
+            <div class="modal-body" id="modalBodyView">
+                <div class="row">
+
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalNome">Nome</label>
+                            <div class="form-label">
+                                <input name="txtModalNome" id="txtModalNome"
+                                       type="text"
+                                       placeholder="Nome"
+                                       class="form-control">
+                            </div>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalEmail">E-mail</label>
+                            <input name="txtModalEmail" id="txtModalEmail"
+                                   type="text"
+                                   placeholder="E-mail"
+                                   class="form-control">
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalSenha">Senha</label>
+                            <input name="txtModalSenha" id="txtModalSenha"
+                                   type="password"
+                                   placeholder="Senha"
+                                   class="form-control">
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalSenhaCC">Confirma Senha</label>
+                            <input name="txtModalSenhaCC" id="txtModalSenhaCC"
+                                   type="password"
+                                   placeholder="Confirma Senha"
+                                   class="form-control">
+                        </fieldset>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnSalvarLaudador">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalCadastroCliente">
+    <div class="modal-dialog modal-lg" style="max-width: 800px !important;">
+        <div class="modal-content" style="width:800px !important;">
+
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Cadastrar Cliente</h4>
+            </div>
+            <div class="modal-body" id="modalBodyView">
+                <div class="row">
+
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalCliNome">Nome</label>
+                            <div class="form-label">
+                                <input name="txtModalCliNome" id="txtModalCliNome"
+                                       type="text"
+                                       placeholder="Nome"
+                                       class="form-control">
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalCliSobreNome">Sobrenome</label>
+                            <input name="txtModalCliSobreNome" id="txtModalCliSobreNome"
+                                   type="text"
+                                   placeholder="Sobrenome"
+                                   class="form-control">
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalCliCPFCNPJ">CPF/CNPJ</label>
+                            <input name="txtModalCliCPFCNPJ" id="txtModalCliCPFCNPJ"
+                                   type="text"
+                                   placeholder="CPF/CNPJ"
+                                   class="form-control">
+                        </fieldset>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalCliEmail">E-mail</label>
+                            <input name="txtModalCliEmail" id="txtModalCliEmail"
+                                   type="text"
+                                   placeholder="E-mail"
+                                   class="form-control">
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalCliSenha">Senha</label>
+                            <input name="txtModalCliSenha" id="txtModalCliSenha"
+                                   type="password"
+                                   placeholder="Senha"
+                                   class="form-control">
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="txtModalCliSenhaCC">Confirma Senha</label>
+                            <input name="txtModalCliSenhaCC" id="txtModalCliSenhaCC"
+                                   type="password"
+                                   placeholder="Confirma Senha"
+                                   class="form-control">
+                        </fieldset>
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnSalvarCliente">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="myUpload">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a style="cursor:pointer" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </a>
+                <h4 class="modal-title">Anexar arquivo(s)</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                <p class="modal-title" id="myModalLabel">@*<small>Arquivo no formato (*.pdf|*.doc|*.docx)</small>*@</p>
+                <iframe id="frmUploads" src="" frameborder="0" style="width: 100%; height: 100%" scrolling="no"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="myEditImage">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a style="cursor:pointer" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </a>
+                <h4 class="modal-title">Ajustar imagem</h4>
+            </div>
+            <div class="modal-body" id="modalBodyEditImage">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <center><img id="imgPictureModal" style="max-height:650px;max-width:750px" /></center>
+                    </div>
+
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="rngSliderContrast">Contraste</label>
+                            <input type="text" id="rngSliderContrast" name="rngSliderContrast" value="" />
+                        </fieldset>
+
+                    </div>
+
+
+                    <div class="col-md-12 mt-2">
+                        <fieldset class="form-group">
+                            <label class="form-label" for="rngSliderBrilho">Brilho</label>
+                            <input type="text" id="rngSliderBrilho" name="rngSliderBrilho" value="" />
+                        </fieldset>
+
+                    </div>
+
+
+                    @*<div class="col-md-12 mt-2">
+                            <fieldset class="form-group">
+                                <label class="form-label" for="rngSliderZoom">Zoom</label>
+                                <input type="text" id="rngSliderZoom" name="rngSliderZoom" value="" />
+                            </fieldset>
+
+                        </div>*@
+                </div>
+                <div class="row">
+
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnSalvarEditImage" onclick="FILECONTROL.SalvarEditImage()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts {
+    @*@Scripts.Render("~/Content/js/lib/jquery-minicolors/jquery.minicolors.min.js")
+
+        @Scripts.Render("~/Content/js/lib/ion-range-slider/ion.rangeSlider.js")*@
+    @Scripts.Render("~/Scripts/jquery-ui.js")
+
+    @Scripts.Render("~/Content/js/lib/ion-range-slider/ion.rangeSlider.js")
+
+    @Scripts.Render("~/Scripts/Cadastro/Exame.Save.js?t=" + Guid.NewGuid())
+
+    @Scripts.Render("~/Content/js/lib/moment/moment-with-locales.min.js")
+    @Scripts.Render("~/Content/js/lib/daterangepicker/daterangepicker.js")
+    @*@Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.caret.min.js")
+        @Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.tag-editor.min.js")*@
+
+
+
+    @*@Scripts.Render("~/Content/fileupload/js/vendor/jquery.ui.widget.js")
+        @Scripts.Render("~/Content/fileupload/js/jquery.iframe-transport.js")*@
+    @*@Scripts.Render("~/Content/fileupload/js/jquery.fileupload.js")*@
+
+}

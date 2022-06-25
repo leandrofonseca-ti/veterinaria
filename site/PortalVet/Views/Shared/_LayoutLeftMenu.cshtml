@@ -1,0 +1,150 @@
+﻿@model PortalVet.Data.Helper.VMHome
+
+<nav class="side-menu">
+    <ul class="side-menu-list">
+        @{
+            if (Model != null && Model.Menus != null)
+            {
+
+                if (PortalVet.Helper.SessionsAdmin.PerfilId == PortalVet.Data.Helper.EnumAdminProfile.Cliente.GetHashCode()
+                        //PortalVet.Helper.SessionsAdmin.PerfilId == PortalVet.Data.Helper.EnumAdminProfile.Laudador.GetHashCode()
+                        )
+                {
+                    <li class="grey with-sub opened" style="background-color:#326582">
+                        <a href="@Url.Action("Index", "Dashboard", new { Area = "" })">
+                            <i class="font-icon font-icon-speed"></i>
+                            <span class="lbl">Painel Inicial</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    foreach (var item in Model.Menus.Where(w => w.Active == true || (w.Active == false && w.TestActive == true)))
+                    {
+                        var opened = "";
+                        if (item.Selected)
+                        {
+                            opened = "opened";
+                        }
+                        var selectedRoot = "";
+                        if (item.Selected && !item.SubMenus.Any())
+                        {
+                            selectedRoot = "background-color:#326582";
+                        }
+                        <li class="grey with-sub @opened" style="@selectedRoot">
+                            @if (item.SubMenus.Any())
+                            {
+
+                                if (PortalVet.Helper.SessionsAdmin.PerfilId == PortalVet.Data.Helper.EnumAdminProfile.Laudador.GetHashCode() ||
+                                    PortalVet.Helper.SessionsAdmin.PerfilId == PortalVet.Data.Helper.EnumAdminProfile.Administrador.GetHashCode() ||
+                                    PortalVet.Helper.SessionsAdmin.PerfilId == PortalVet.Data.Helper.EnumAdminProfile.Gerente.GetHashCode())//!(item.Name == "Cadastros" && item.SubMenus.Any(x => x.Active && x.ControllerName == "Exame")))
+                                {
+                                    <span>
+                                        <i class="font-icon @item.FontIcon"></i>
+                                        <span class="lbl">@item.Name</span>
+                                    </span>
+                                    <ul>
+
+                                        @{
+
+                                            var subMenus = item.SubMenus;
+
+
+
+                                            //if (Model.ProfileId == PortalVet.Data.Helper.EnumAdminProfile.Imobiliaria.GetHashCode()
+                                            //    && Model.Empresa != null)
+                                            //{
+                                            //    if (Model.Empresa.HabilitaConsultor == false && Model.Empresa.HabilitaConsultorTotal == false)
+                                            //    {
+                                            //        subMenus = subMenus.Where(x => !(x.AreaName == "Cadastro" && (x.ControllerName == "Consultor" || x.ControllerName == "ConsultorEdicao"))).ToList();
+                                            //    }
+                                            //    /*if (!Model.Empresa.HabilitaConsultorTotal)
+                                            //    {
+                                            //        subMenus = subMenus.Where(x => !(x.AreaName == "Cadastro" && x.ControllerName == "Usuario")).ToList();
+                                            //    }*/
+                                            //}
+
+                                            foreach (var itemSub in subMenus.Where(x => x.Active && x.ControllerName != "Exame"))
+                                            {
+                                                if (itemSub.SubMenus.Where(x => x.Active).Any())
+                                                {
+
+
+                                                    <li class="grey with-sub @opened" style="background-color:transparent !important">
+                                                        <span>
+                                                            <i class="font-icon @itemSub.FontIcon"></i>
+                                                            <span class="lbl">@itemSub.Name </span>
+                                                        </span>
+                                                        <ul>
+                                                            @foreach (var itemSub2 in itemSub.SubMenus.Where(x => x.Active))
+                                                            {
+                                                                var selected = "";
+                                                                if (itemSub2.Selected)
+                                                                {
+                                                                    selected = "background-color:#326582";
+                                                                }
+                                                                if (String.IsNullOrEmpty(itemSub2.AreaName))
+                                                                {
+                                                                    <li style="@selected"><a href="@Url.Action(itemSub2.ActionName, itemSub2.ControllerName, new { Area = ""})"><span class="lbl">@itemSub2.Name</span></a></li>
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    <li style="@selected"><a href="@Url.Action(itemSub2.ActionName, itemSub2.ControllerName, new { Area = itemSub2.AreaName})"><span class="lbl">@itemSub2.Name</span></a></li>
+                                                                }
+                                                            }
+
+                                                        </ul>
+                                                    </li>
+
+                                                }
+                                                else
+                                                {
+
+                                                    var selected = "";
+                                                    if (itemSub.Selected)
+                                                    {
+                                                        selected = "background-color:#326582";
+                                                    }
+                                                    if (String.IsNullOrEmpty(itemSub.AreaName))
+                                                    {
+                                                        <li style="@selected"><a href="@Url.Action(itemSub.ActionName, itemSub.ControllerName, new { Area = "" })"><span class="lbl">@itemSub.Name</span></a></li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li style="@selected"><a href="@Url.Action(itemSub.ActionName, itemSub.ControllerName, new { Area = itemSub.AreaName})"><span class="lbl">@itemSub.Name</span></a></li>
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    </ul>
+                                }
+                            }
+                            else
+                            {
+                                <a href="@Url.Action(item.ActionName, item.ControllerName, new { Area = "" })">
+                                    <i class="font-icon @item.FontIcon"></i>
+                                    <span class="lbl">@item.Name </span>
+                                    @if (item.Name.Equals("lembretes", StringComparison.InvariantCultureIgnoreCase))
+                                    {
+                                        <span class="label label-custom label-pill label-danger" style="{{lembreteVisibleStyle}}">{{lembreteTotal}}</span>
+                                    }
+                                </a>
+                            }
+                        </li>
+                    }
+                }
+            }
+        }
+
+
+
+        <li class="grey with-sub" style="display:none">
+            <small id="headerTopLabel" style="color:#929fa6;float:right;padding-right:15px"></small>
+        </li>
+
+
+    </ul>
+
+</nav>

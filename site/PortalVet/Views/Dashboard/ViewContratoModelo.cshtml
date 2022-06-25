@@ -1,0 +1,367 @@
+﻿@model PortalVet.Data.Entity.ExameItem
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutModeloPDF.cshtml";
+}
+ 
+
+<style>
+    
+    .pagebreak {
+        page-break-before: always;
+    }
+</style>
+
+<div style="background-color:#F9F9F9;padding:10px;">
+
+    <!-- Logo : Link : Line Open -->
+    <table cellpadding="0" cellspacing="0" align="center" width="100%" style="background-color: #F9F9F9; border: 0; border-collapse: collapse; border-spacing: 0; margin: 0 auto; max-width: 100%; width: 100%; ">
+        <tr>
+            <td align="center" style="">
+                <table cellpadding="0" cellspacing="0" align="center" class="table-700" style="background-color: transparent; border: 0; border-collapse: collapse; border-spacing: 0; margin: 0 auto; max-width: 700px; width: 700px;">
+                    <tr>
+                        <td style="font-size:30px;height:30px;line-height:30px;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center" class="mo-px-25" style="">
+                            <table cellpadding="0" cellspacing="0" align="center" class="table-640" style="border:0;border-collapse:collapse;border-spacing:0;margin:0 auto;max-width:640px;width:640px;">
+                                <tr>
+                                    <td align="center" style="font-size:0;">
+                                        <table cellpadding="0" cellspacing="0" align="center" width="100%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                                            <tr>
+                                                <td align="center" style="padding:0;padding-bottom:30px;">
+                                                    <!-- Brand Logo -->
+                                        
+                                                    @{
+
+                                                        var nomeoulogo = "";
+                                                        if (ViewData["imagemCompany"].ToString() == "")
+                                                        {
+                                                            nomeoulogo = $"<label>{ViewData["imagemCompanyNome"].ToString()}</label>";
+                                                        }
+                                                        else
+                                                        {
+                                                            nomeoulogo = $"<img style='max-height:85px' src='{ViewData["imagemCompany"].ToString()}'/>";
+                                                        }
+
+                                                    }
+                                                    @Html.Raw(nomeoulogo);
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" style="padding:0;padding-bottom:15px;">
+                                                    <table align="center" cellpadding="0" cellspacing="0" width="90%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                                                        <tr>
+                                                            <td style="background-color:#F1F1F1;font-size:2px;height:2px;line-height:2px;">&nbsp;</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="mo-h-30" style="font-size:15px;height:15px;line-height:15px;">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- Logo : Link : Line Close -->
+ 
+
+
+    <table cellpadding="0" cellspacing="0" align="center" width="100%" style="border:0;border-collapse:collapse;border-spacing:0;">
+        <tbody>
+            <tr>
+                <td align="center" style="font-size:0;padding: 0;padding-bottom: 20px;">
+                    <!--[if (gte mso 9)|(IE)]><table cellpadding="0" cellspacing="0" align="center" width="640"><tr><td width="305" valign="top"><![endif]-->
+                    <div class="row" style="display:inline-block;vertical-align:top;width:100%;">
+                        <table cellpadding="0" cellspacing="0" align="center" width="100%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                            <tbody>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding-left:50px;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Nº&nbsp;Exame&nbsp;:&nbsp;@Model.Id
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding-left:50px;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Clínica&nbsp;:&nbsp;@Model.CompanyNome
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding-left:50px;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Vet.&nbsp;Resp&nbsp;:&nbsp;@Model.Veterinario
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding-left:50px;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Proprietário&nbsp;:&nbsp;@Model.Proprietario
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding-left:50px;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Espécie&nbsp;:&nbsp;@Model.EspecieSelecao
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--[if (gte mso 9)|(IE)]></td><td width="30" valign="top"><![endif]-->
+        
+                </td>
+                <td align="center" style="font-size:0;padding: 0;padding-bottom: 20px;">
+
+                    <!--[if (gte mso 9)|(IE)]></td><td width="193" valign="top"><![endif]-->
+                    <div class="row" style="display:inline-block;vertical-align:top;width:100%;">
+                        <table cellpadding="0" cellspacing="0" align="center" width="100%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                            <tbody>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding:0;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Data&nbsp;:&nbsp;@Html.Raw(String.Concat(Model.DataExameFmt, "&nbsp;", Model.DataExameHH, ":", Model.DataExameMM))
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding:0;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Paciente&nbsp;:&nbsp;@Model.Paciente
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding:0;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Raça&nbsp;:&nbsp;@Model.RacaSelecao
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding:0;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        Idade&nbsp;:&nbsp;@Model.Idade
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" style="font-size:0;padding:0;padding-bottom:20px;">
+                                        <table cellpadding="0" cellspacing="0" align="left">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="left" class="mo-text-left" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;line-height:22px;padding-right:10px;">
+                                                        &nbsp;
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @*<div class="row" style="display:inline-block;max-width:30px;vertical-align:top;width:100%;">
+                            <table cellpadding="0" cellspacing="0" align="center" width="100%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                                <tbody>
+                                    <tr>
+                                        <td style="font-size:30px;height:30px;line-height:30px;">&nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>*@
+
+                </td>
+                <!--<td align="center" style="font-size:0;padding: 0;padding-bottom: 20px;">-->
+                <!--[if (gte mso 9)|(IE)]></td><td width="193" valign="top"><![endif]-->
+                <!--<div class="row" style="display:inline-block;vertical-align:top;width:100%;">
+                    <table cellpadding="0" cellspacing="0" align="center" width="100%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>-->
+                <!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]-->
+                <!--</td>-->
+            </tr>
+            <tr>
+                <td colspan="2" align="center" style="padding:0;padding-bottom:15px;">
+                    <table align="center" cellpadding="0" cellspacing="0" width="90%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                        <tr>
+                            <td style="background-color:#F1F1F1;font-size:2px;height:2px;line-height:2px;">&nbsp;</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="padding-left:30px">
+        @Html.Raw(ViewData["modeloCorpo"].ToString())
+    </div>
+    <!-- Footer : Open -->
+    <table cellpadding="0" cellspacing="0" align="center" width="100%" style="background-color:#F9F9F9;border:0;border-collapse:collapse;border-spacing:0;margin:0 auto;max-width:100%;width:100%;">
+        <tr>
+            <td align="center">
+                <table cellpadding="0" cellspacing="0" align="center" class="table-700" style="background-color:#F9F9F9;border:0;border-collapse:collapse;border-spacing:0;margin:0 auto;max-width:700px;width:700px;">
+                    <tr>
+                        <td style="font-size:60px;height:60px;line-height:60px;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td align="center" class="mo-px-25">
+                            <table cellpadding="0" cellspacing="0" align="center" class="table-640" style="border:0;border-collapse:collapse;border-spacing:0;margin:0 auto;max-width:640px;width:640px;">
+                                <tr>
+                                    <td align="center">
+                                        <table cellpadding="0" cellspacing="0" align="center" width="100%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                                            <tr>
+                                                <td align="center" style="padding:0;padding-bottom:30px;">
+                                                    <table cellpadding="0" cellspacing="0" align="center" width="90%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                                                        <tr>
+                                                            <td align="center" style="background-color:#F1F1F1;font-size:2px;height:2px;line-height:2px;">&nbsp;</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:14px;letter-spacing:1px;line-height:26px;padding:0;padding-bottom:10px;">
+                                                    @Html.Raw(ViewData["modeloRodape"].ToString())
+                                                </td>
+                                            </tr>
+                                            @*<tr>
+                                                    <td align="center" style="padding:0;padding-bottom:30px;">
+                                                        <table cellpadding="0" cellspacing="0" align="center" width="80" style="border:0;border-collapse:collapse;border-spacing:0;">
+                                                            <tr>
+                                                                <td align="center" style="background-color:#F1F1F1;font-size:2px;height:2px;line-height:2px;">&nbsp;</td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:16px;font-weight:600;letter-spacing:1px;line-height:26px;padding:0;padding-bottom:10px;#EXIBE_MARCA#">
+                                                        Tecnologia <a href="https://sohtec.com.br" target="_blank">SOHTEC</a>
+                                                    </td>
+                                                </tr>*@
+                                            <!--<tr>
+                                                <td align="center" style="color:#000000;font-family:'Nunito',Arial,sans-serif;font-size:16px;font-weight:600;letter-spacing:1px;line-height:26px;padding:0;padding-bottom:10px;#EXIBE_MARCA#">-->
+                                            <!--<span style="font-size: 11px;">#LINK_DESCADASTRAR#</span>-->
+                                            <!--</td>
+                                            </tr>-->
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-size:60px;height:60px;line-height:60px;">&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- Footer : Close -->
+
+
+    @{
+
+        var listImagens = (List<PortalVet.Models.ViewModelFoto>)ViewData["viewArquivos"];
+
+
+        foreach (var imagem in listImagens)
+        {
+
+            <div class="pagebreak">
+                    <center>
+                        <img src="@imagem.Name" />
+                    </center>
+            </div>
+        }
+
+    }
+
+
+
+</div>
+

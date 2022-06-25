@@ -1,0 +1,77 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Zoom</title>
+
+    <style>
+        .image-outer-wrapper {
+            border: 3px solid black;
+            overflow: hidden;
+           /* height: 300px;*/
+        }
+
+        img {
+            cursor: move;
+        }
+
+        #scene {
+            display: inline-block;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.panzoom/4.0.0/panzoom.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div class="image-outer-wrapper">
+            <div id="scene">
+                @{
+                    if (String.IsNullOrEmpty(ViewBag.PathImage))
+                    {
+                        <h2>Imagem não encontrada!</h2>
+                    }
+                    else
+                    {
+                        <img src="@ViewBag.PathImage" />
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const elem = document.getElementById('scene');
+            const panzoom = Panzoom(elem, {
+                bound: 'outer'
+            });
+            panzoom.pan(50, 50)
+            //panzoom.zoom(-5, { animate: true })
+
+           // button.addEventListener('click', panzoom.zoomIn)
+
+            //const btnReset = document.getElementById('btnReset');
+            //const btnZoomIn = document.getElementById('btnZoomIn');
+            //const btnZoomOut = document.getElementById('btnZoomOut');
+
+            //btnZoomIn.addEventListener('click', panzoom.zoomIn)
+            //btnZoomOut.addEventListener('click', panzoom.zoomOut)
+            //btnReset.addEventListener('click', panzoom.reset)
+
+            elem.parentElement.addEventListener('wheel', panzoom.zoomWithWheel)
+            //panzoom('#example', {
+            //    bound: 'outer'
+            //    //pan: true,
+            //    //zoom: true
+            //});
+        });
+    </script>
+</body>
+</html>

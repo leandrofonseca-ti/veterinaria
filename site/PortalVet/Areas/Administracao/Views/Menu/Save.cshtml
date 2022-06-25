@@ -1,0 +1,167 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+
+
+}
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnId", Model.ID)
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5 id="ltlTitle"></h5>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action("Index","Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="@Url.Action("Index","Menu", new { Area = "Administracao" })" id="controllerName"></a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+
+
+    </div>
+
+
+    <div class="card-block">
+
+        <div class="alert alert-danger alert-border-left alert-close alert-dismissible fade" role="alert" id="msgError">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            Preencha corretamente os dados abaixo:
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+
+                <fieldset class="form-group">
+                    <label class="form-label">Menu Pai</label>
+                    <select id="drpMenuPai" name="drpMenuPai" class="select2">
+                        <option value="">:: Selecione ::</option>
+                        @{
+                            var list = (List<SelectListItem>)ViewData["ListMenuPai"];
+                            foreach (var item in list)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </fieldset>
+                <fieldset class="form-group">
+                    <label class="form-label">Nome</label>
+                    <input name="txtNome" id="txtNome"
+                           type="text"
+                           placeholder="Nome"
+                           class="form-control">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label class="form-label">Caminho</label>
+                    <input name="txtCaminho" id="txtCaminho"
+                           type="text"
+                           placeholder="Caminho"
+                           class="form-control">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label class="form-label">Módulo</label>
+                    <input name="txtModulo" id="txtModulo"
+                           type="text"
+                           placeholder="Módulo"
+                           class="form-control">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label class="form-label">Ícone</label>
+                    <input name="txtIcone" id="txtIcone"
+                           type="text"
+                           placeholder="Ícone"
+                           class="form-control">
+                </fieldset>
+
+
+
+                <fieldset class="form-group">
+                    <label class="form-label">Area</label>
+                    <input name="txtArea" id="txtArea"
+                           type="text"
+                           placeholder="Area"
+                           class="form-control">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label class="form-label">Controller</label>
+                    <input name="txtController" id="txtController"
+                           type="text"
+                           placeholder="Nome"
+                           class="form-control">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label class="form-label">Action</label>
+                    <input name="txtAction" id="txtAction"
+                           type="text"
+                           placeholder="Action"
+                           class="form-control">
+                </fieldset>
+
+
+                <fieldset class="form-group">
+                    <label class="form-label">Ordem</label>
+                    <input name="txtOrdem" id="txtOrdem"
+                           type="text"
+                           placeholder="Ordem"
+                           class="form-control">
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="checkbox">
+                        <input type="checkbox" id="chkAtivo" name="chkAtivo">
+                        <label for="chkAtivo">Ativo</label>
+                    </div>
+                </fieldset>
+
+
+
+                <fieldset class="form-group" id="areaEmpresas" style="display:none">
+                    <label for="drpEmpresa" class="form-label"><small>Empresas (para testar)</small></label>
+                    <select id="drpEmpresa" name="drpEmpresa" class="select2" multiple="multiple">
+
+                        @{
+                            var list2 = (List<SelectListItem>)ViewData["ListEmpresa"];
+                            foreach (var item in list2)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <button type="button" id="btnBack" name="btnBack" class="btn btn-inline btn-secondary-outline">Voltar</button>
+
+                    <button type="button" id="btnSave" name="btnSave" class="btn btn-inline btn-primary-outline">Salvar</button>
+                </fieldset>
+            </div>
+
+        </div><!--.row-->
+
+    </div>
+</section>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/Administracao/Menu.Save.js")
+}

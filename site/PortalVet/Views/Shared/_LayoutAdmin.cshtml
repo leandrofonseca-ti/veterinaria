@@ -1,0 +1,854 @@
+﻿@model PortalVet.Data.Helper.VMHome
+<!DOCTYPE html>
+<html ng-app="PORTALVET" lang="pt-br" id="allHtml">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>:: Web Imagem ::</title>
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="@Url.Content("~/Content/img/icon/apple-touch-icon-57x57.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="@Url.Content("~/Content/img/icon/apple-touch-icon-114x114.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@Url.Content("~/Content/img/icon/apple-touch-icon-72x72.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="@Url.Content("~/Content/img/icon/apple-touch-icon-144x144.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="@Url.Content("~/Content/img/icon/apple-touch-icon-60x60.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="@Url.Content("~/Content/img/icon/apple-touch-icon-120x120.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="@Url.Content("~/Content/img/icon/apple-touch-icon-76x76.png")" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="@Url.Content("~/Content/img/icon/apple-touch-icon-152x152.png")" />
+    <link rel="icon" type="image/png" href="@Url.Content("~/Content/img/icon/favicon-196x196.png")" sizes="196x196" />
+    <link rel="icon" type="image/png" href="@Url.Content("~/Content/img/icon/favicon-96x96.png")" sizes="96x96" />
+    <link rel="icon" type="image/png" href="@Url.Content("~/Content/img/icon/favicon-32x32.png")" sizes="32x32" />
+    <link rel="icon" type="image/png" href="@Url.Content("~/Content/img/icon/favicon-16x16.png")" sizes="16x16" />
+    <link rel="icon" type="image/png" href="@Url.Content("~/Content/img/icon/favicon-128.png")" sizes="128x128" />
+    <meta name="application-name" content="WebImagem" />
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="@Url.Content("~/Content/img/icon/mstile-144x144.png")" />
+    <meta name="msapplication-square70x70logo" content="@Url.Content("~/Content/img/icon/mstile-70x70.png")" />
+    <meta name="msapplication-square150x150logo" content="@Url.Content("~/Content/img/icon/mstile-150x150.png")" />
+    <meta name="msapplication-wide310x150logo" content="@Url.Content("~/Content/img/icon/mstile-310x150.png")" />
+    <meta name="msapplication-square310x310logo" content="@Url.Content("~/Content/img/icon/mstile-310x310.png")" />
+    <meta name="theme-color" content="#ffffff" />
+    <link href="@Url.Content("~/Content/img/icon/favicon.ico")" rel="shortcut icon" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @*@Styles.Render("~/Content/css")*@
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/variables.css?t="+ Guid.NewGuid())" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/datatables-net/datatables.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/vendor/datatables-net.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/lobipanel/lobipanel.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/vendor/lobipanel.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/jqueryui/jquery-ui.min.css")" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/datetimepicker/bootstrap-datetimepicker.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/pages/widgets.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/bootstrap-sweetalert/sweetalert.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/vendor/sweet-alert-animations.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/vendor/bootstrap-select/bootstrap-select.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/vendor/select2.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/font-awesome/font-awesome.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/summernote/summernote.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/pages/editor.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/bootstrap/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/main.css?t="+ Guid.NewGuid())" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/separate/vendor/blockui.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/odometer-theme-default.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/collapse.css?t="+ Guid.NewGuid())" />
+    <link rel="stylesheet" href="~/dist/css/Lobibox.min.css" />
+
+    @RenderSection("styles", required: false)
+    @Html.Hidden("hdnFull")
+    @*@Html.Hidden("hdnMapPath", Model.MapPath)*@
+    @Html.Hidden("hdnUrlPathUpload", Model.UrlPathUpload)
+    @Html.Hidden("hdnCurrentEmpresaId", Model.EmpresaId)
+    @Html.Hidden("hdnCurrentUsuarioId", Model.UserId)
+
+    @Html.Hidden("hdnAreaName", Model.AreaName)
+    @Html.Hidden("hdnControllerName", Model.ControllerName)
+    @Html.Hidden("hdnAdminDashboard")
+    @Html.Hidden("hdnVisualizarProximoConsultor", Model.VisualizarProximoConsultor ? "1" : "0")
+    @{
+        var profileid = (PortalVet.Data.Helper.EnumAdminProfile)PortalVet.Helper.SessionsAdmin.PerfilId;
+    }
+    @Html.Hidden("hdnPerfilCodigo", profileid.GetHashCode())
+    @Html.Hidden("hdnProfileIdAdministrador", PortalVet.Data.Helper.EnumAdminProfile.Administrador.GetHashCode())
+    @*@Html.Hidden("hdnProfileIdImobiliaria", PortalVet.Data.Helper.EnumAdminProfile.Imobiliaria.GetHashCode())
+        @Html.Hidden("hdnProfileIdCorretor", PortalVet.Data.Helper.EnumAdminProfile.Corretor.GetHashCode())
+        @Html.Hidden("hdnProfileIdCorretora", PortalVet.Data.Helper.EnumAdminProfile.Corretora.GetHashCode())
+        @Html.Hidden("hdnProfileIdConsultor", PortalVet.Data.Helper.EnumAdminProfile.Consultor.GetHashCode())
+        @Html.Hidden("hdnProfileIdConsultorTotal", PortalVet.Data.Helper.EnumAdminProfile.ConsultorTotal.GetHashCode())
+        @Html.Hidden("hdnProfileIdProprietario", PortalVet.Data.Helper.EnumAdminProfile.Proprietario.GetHashCode())*@
+    @Html.Hidden("hdnListEmpresaCount", Model.ListEmpresa.Count)
+    @Html.Hidden("hdnListEmpresa", Newtonsoft.Json.JsonConvert.SerializeObject(Model.ListEmpresa))
+
+</head>
+<body class="with-side-menu theme-picton-blue-white-ebony" id="bodyLayout" style="display:none;" ng-controller="MasterController">
+    <input type="hidden" id="UrlBase" value="@ViewData["rootUrl"]" />
+    <input type="hidden" id="UrlBaseImob" value="@PortalVet.Helper.AppSettings.UrlRootAdmin" />
+    <input type="hidden" id="UrlDominio" value="@ViewData["rootUrlDominio"]" />
+    @{ string bg = "#ffffff"; }
+    @if (ViewData["rootUrl"].ToString().IndexOf("sohtecdev", StringComparison.OrdinalIgnoreCase) > -1)
+    {
+        bg = "#FFADAD";
+    }
+    <header class="site-header" style="background-color:@bg !important;">
+        <div class="container-fluid">
+            <a href="#" class="site-logo">
+                <img class="" src="@Url.Content(Model.EmpresaLogo)" width="170"  alt="">
+            </a>
+            <button id="show-hide-sidebar-toggle" class="show-hide-sidebar">
+                <span>toggle menu</span>
+            </button>
+            <button class="hamburger hamburger--htla">
+                <span>toggle menu</span>
+            </button>
+            <div class="site-header-content">
+                <div class="site-header-content-in">
+                    <div class="site-header-shown">
+
+
+
+                        <div class="dropdown dropdown-notification notif" style="display:none">
+                            <a href="#"
+                               class="header-alarm dropdown-toggle active"
+                               id="dd-notification"
+                               data-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                <i class="font-icon-alarm"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-notif" aria-labelledby="dd-notification">
+                                <div class="dropdown-menu-notif-header">
+                                    Notifications
+                                    <span class="label label-pill label-danger">4</span>
+                                </div>
+                                <div class="dropdown-menu-notif-list">
+                                    <div class="dropdown-menu-notif-item">
+                                        <div class="photo">
+                                            <img src="@Url.Content("~/Content/img/photo-64-1.jpg")" alt="">
+                                        </div>
+                                        <div class="dot"></div>
+                                        <a href="#">Morgan</a> was bothering about something
+                                        <div class="color-blue-grey-lighter">7 hours ago</div>
+                                    </div>
+                                    <div class="dropdown-menu-notif-item">
+                                        <div class="photo">
+                                            <img src="@Url.Content("~/Content/img/photo-64-2.jpg")" alt="">
+                                        </div>
+                                        <div class="dot"></div>
+                                        <a href="#">Lioneli</a> had commented on this <a href="#">Super Important Thing</a>
+                                        <div class="color-blue-grey-lighter">7 hours ago</div>
+                                    </div>
+                                    <div class="dropdown-menu-notif-item">
+                                        <div class="photo">
+                                            <img src="@Url.Content("~/Content/img/photo-64-3.jpg")" alt="">
+                                        </div>
+                                        <div class="dot"></div>
+                                        <a href="#">Xavier</a> had commented on the <a href="#">Movie title</a>
+                                        <div class="color-blue-grey-lighter">7 hours ago</div>
+                                    </div>
+                                    <div class="dropdown-menu-notif-item">
+                                        <div class="photo">
+                                            <img src="@Url.Content("~/Content/img/photo-64-4.jpg")" alt="">
+                                        </div>
+                                        <a href="#">Lionely</a> wants to go to <a href="#">Cinema</a> with you to see <a href="#">This Movie</a>
+                                        <div class="color-blue-grey-lighter">7 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-menu-notif-more">
+                                    <a href="#">See more</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="dropdown dropdown-lang">
+                            <input type="hidden" id="hdnUsuarioEmail" value="@Model.UsuarioEmail" />
+                            <input type="hidden" id="hdnProfileName" value="@Model.ProfileName" />
+                            <input type="hidden" id="hdnEmpresaId" value="@Model.EmpresaId" />
+                            <span class="lbl">@HttpUtility.HtmlDecode(Model.FirstNameTop)</span>
+                            <br />
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" id="dd-header-form-builder" data-target="#" href="javascript:;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <small><span class="font-icon font-icon-user"></span></small>
+                                    <span class="lbl"><small>{{ProfileName}}</small></span>
+                                </a>
+
+
+                                <div id="dvListProfiles" ng-if="ListProfiles.length > 1" class="dropdown-menu" aria-labelledby="dd-header-form-builder">
+                                    <a ng-repeat="profile in ListProfiles"
+                                       class="dropdown-item"
+                                       href="javascript:;"
+                                       onclick="JSERVICE.SetProfileAngular(this)" data-pid="{{profile.Id}}"><span class="font-icon font-icon-user"></span>{{profile.Nome}}</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="dropdown user-menu">
+
+                            <button class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="@Model.UrlImageUser" alt="" />
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
+                                @{
+                                    int forceId = 0;
+
+                                    if (PortalVet.Helper.SessionsAdmin.ForceId != "")
+                                    {
+                                        forceId = Int32.Parse(PortalVet.Helper.SessionsAdmin.ForceId);
+                                    }
+
+                                    if (forceId > 0)
+                                    {
+                                        <a class="dropdown-item" href="@Url.Action("ForceLogin", "Admin", new { pid = forceId, @id = forceId, @area=""})"><span class="font-icon font-icon-cogwheel"></span>Back to Admin</a>
+                                        <div class="dropdown-divider"></div>
+                                    }
+                                }
+
+                                @*<a class="dropdown-item" href="@Url.Action("Perfil", "Dashboard", new { Area = "", id = Model.UserId})"><span class="font-icon glyphicon glyphicon-user"></span>Perfil</a>*@
+                                @*<div class="dropdown-divider"></div>*@
+                                <a class="dropdown-item" href="@Url.Action("Logout", "Admin", new { Area = ""})"><span class="font-icon glyphicon glyphicon-log-out"></span>Sair</a>
+
+                            </div>
+                        </div>
+
+                        <button type="button" class="burger-right">
+                            <i class="font-icon-menu-addl"></i>
+                        </button>
+
+                    </div><!--.site-header-shown-->
+                    @{
+
+                        var permitirExibicaoAdmin = false;
+                        var versaoBetaSuaImobiliaria = (Model.EmpresaId == 1);
+                        var profile = (PortalVet.Data.Helper.EnumAdminProfile)Model.ProfileId;
+                        //permitirExibicaoAdmin = Model.ProfileName.Equals("Administrador", StringComparison.InvariantCultureIgnoreCase) && Model.Empresa != null;
+
+                        if (Model.ProfileId == PortalVet.Data.Helper.EnumAdminProfile.Administrador.GetHashCode() ||
+                        Model.ProfileId == PortalVet.Data.Helper.EnumAdminProfile.Gerente.GetHashCode())
+                        {
+                            permitirExibicaoAdmin = true;
+                        }
+                    }
+                    @if (permitirExibicaoAdmin)
+                    {
+                        <div class="site-header-collapsed">
+
+                            <div class="site-header-collapsed-in">
+
+
+                                @if (Model.ListEmpresa.Count > 1)
+                                {
+                                    <div class="dropdown" style="padding: 0px 13px 0px 0px;">
+                                        <a class="dropdown-toggle" id="dd-header-form-builder" data-target="#" href="javascript:;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="font-icon font-icon-home"></span>
+                                        </a>
+
+                                        <div class="dropdown-menu" aria-labelledby="dd-header-form-builder" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 24px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                            @foreach (var i in Model.ListEmpresa.Where(t => t.Value != Model.EmpresaId.ToString()))
+                                            {
+                                                <a class="dropdown-item" href="javascript:JSERVICE.SetEmpresa(@i.Value);"><span class="font-icon font-icon-home"></span>@i.Text</a>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                @*@if (versaoBetaSuaImobiliaria || permitirExibicaoAdmin)
+                                    {
+                                        <div class="dropdown" style="padding: 3px 35px 0px 0px;">
+                                            <a id="dd-header-form-builder" href="@Url.Action("Index","Faq",new { @Area =""})" target="_blank">
+                                                <span class="font-icon font-icon-help"></span>
+                                                <span class="lbl">Faq</span>
+                                            </a>
+                                        </div>
+                                    }*@
+
+
+
+                                <div class="dropdown dropdown-notification messages" id="ntfDropdown" style="display:none;padding:0px 15px 0px 0px">
+                                    <a href="#"
+                                       class="header-alarm dropdown-toggle active"
+                                       id="dd-messages"
+                                       data-toggle="dropdown"
+                                       aria-haspopup="true"
+                                       aria-expanded="false">
+                                        <i class="font-icon-mail"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-messages" aria-labelledby="dd-messages">
+                                        <div class="dropdown-menu-messages-header">
+                                            <ul class="nav" role="tablist">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active"
+                                                       data-toggle="tab"
+                                                       href="#tab-incoming"
+                                                       role="tab">
+                                                        Notificações
+                                                        <span class="label label-pill label-danger" id="ntfCount" style="display:none"></span>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="tab-incoming" role="tabpanel">
+                                                <div class="dropdown-menu-messages-list" id="ntfMsg" style="display:none">
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+                    }
+
+                    <div class="mobile-menu-right-overlay"></div>
+                    <div class="site-header-collapsed" style="display:none">
+                        <div class="site-header-collapsed-in">
+
+
+
+                            <div class="dropdown dropdown-notification messages">
+                                <a href="#"
+                                   class="header-alarm dropdown-toggle active"
+                                   id="dd-messages"
+                                   data-toggle="dropdown"
+                                   aria-haspopup="true"
+                                   aria-expanded="false">
+                                    <i class="font-icon-mail"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-messages" aria-labelledby="dd-messages">
+                                    <div class="dropdown-menu-messages-header">
+                                        <ul class="nav" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active"
+                                                   data-toggle="tab"
+                                                   href="#tab-incoming"
+                                                   role="tab">
+                                                    Inbox
+                                                    <span class="label label-pill label-danger">8</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link"
+                                                   data-toggle="tab"
+                                                   href="#tab-outgoing"
+                                                   role="tab">Outbox</a>
+                                            </li>
+                                        </ul>
+                                        <!--<button type="button" class="create">
+                                            <i class="font-icon font-icon-pen-square"></i>
+                                        </button>-->
+                                    </div>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="tab-incoming" role="tabpanel">
+                                            <div class="dropdown-menu-messages-list">
+                                                <a href="#" class="mess-item">
+                                                    <span class="avatar-preview avatar-preview-32"><img src="~/Content/img/photo-64-2.jpg" alt=""></span>
+                                                    <span class="mess-item-name">Tim Collins</span>
+                                                    <span class="mess-item-txt">Morgan was bothering about something!</span>
+                                                </a>
+                                                <a href="#" class="mess-item">
+                                                    <span class="avatar-preview avatar-preview-32"><img src="" alt=""></span>
+                                                    <span class="mess-item-name">Christian Burton</span>
+                                                    <span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something.</span>
+                                                </a>
+                                                <a href="#" class="mess-item">
+                                                    <span class="avatar-preview avatar-preview-32"><img src="~/Content/img/photo-64-2.jpg" alt=""></span>
+                                                    <span class="mess-item-name">Tim Collins</span>
+                                                    <span class="mess-item-txt">Morgan was bothering about something!</span>
+                                                </a>
+                                                <a href="#" class="mess-item">
+                                                    <span class="avatar-preview avatar-preview-32"><img src="" alt=""></span>
+                                                    <span class="mess-item-name">Christian Burton</span>
+                                                    <span class="mess-item-txt">Morgan was bothering about something...</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-outgoing" role="tabpanel">
+                                            <div class="dropdown-menu-messages-list">
+                                                <a href="#" class="mess-item">
+                                                    <span class="avatar-preview avatar-preview-32"><img src="" alt=""></span>
+                                                    <span class="mess-item-name">Christian Burton</span>
+                                                    <span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something...</span>
+                                                </a>
+                                                <a href="#" class="mess-item">
+                                                    <span class="avatar-preview avatar-preview-32"><img src="" alt=""></span>
+                                                    <span class="mess-item-name">Tim Collins</span>
+                                                    <span class="mess-item-txt">Morgan was bothering about something! Morgan was bothering about something.</span>
+                                                </a>
+                                                <a href="#" class="mess-item">
+                                                    <span class="avatar-preview avatar-preview-32"><img src="" alt=""></span>
+                                                    <span class="mess-item-name">Christian Burtons</span>
+                                                    <span class="mess-item-txt">Morgan was bothering about something!</span>
+                                                </a>
+                                                <a href="#" class="mess-item">
+                                                    <span class="avatar-preview avatar-preview-32"><img src="" alt=""></span>
+                                                    <span class="mess-item-name">Tim Collins</span>
+                                                    <span class="mess-item-txt">Morgan was bothering about something!</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-menu-notif-more">
+                                        <a href="#">See more</a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!--<div class="dropdown dropdown-typical">
+                                <a class="dropdown-toggle" id="dd-header-marketing" data-target="#" href="http://example.com" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="font-icon font-icon-cogwheel"></span>
+                                    <span class="lbl">Marketing automation</span>
+                                </a>
+                            </div>-->
+                            <!--.help-dropdown-->
+                            <!--<div class="site-header-search-container">
+                                <div class="site-header-search closed">
+                                    <input type="text" placeholder="Search" />
+                                    <button type="submit">
+                                        <span class="font-icon-search"></span>
+                                    </button>
+                                    <div class="overlay"></div>
+                                </div>
+                            </div>-->
+                        </div><!--.site-header-collapsed-in-->
+                    </div><!--.site-header-collapsed-->
+                </div><!--site-header-content-in-->
+            </div>
+
+        </div>
+    </header>
+    <div class="mobile-menu-left-overlay"></div>
+
+    @Html.Partial("_LayoutLeftMenu", Model)
+    <!--.side-menu-->
+    <div class="page-content">
+        <script>
+            var msecTimeOut = (@Session.Timeout * 60);
+            //msecTimeOut = 0.5 * 60;
+            var showmodal = true;
+            function WriteSessionTimer() {
+                msecTimeOut = msecTimeOut - 1;
+
+                if (msecTimeOut >= 0) {
+                    var minutos = 0;
+                    if (msecTimeOut > 60) {
+                        var minAux = msecTimeOut / 60;
+                        minutos = parseInt(minAux) % 60;
+                        var secAux = msecTimeOut % 60;
+                        var horaAux = parseInt(minAux) / 60;
+                        var horas = parseInt(horaAux);
+                        // var minutos = parseInt(horaAux) % 60;
+                        if (minutos < 10) {
+                            minutos = "0" + minutos.toString() + "m ";
+                        }
+                        else {
+                            minutos = minutos + "m ";
+                        }
+
+                        if (secAux < 10) {
+                            secAux = "0" + secAux.toString() + "s ";
+                        }
+                        else {
+                            secAux = secAux + "s ";
+                        }
+
+
+                        if (horas == 0) {
+                            horas = "";
+                        } else {
+                            horas = horas + "h ";
+                        }
+
+                        $("#headerTopLabel").html(horas + minutos + secAux);
+                    }
+                    else {
+                        $("#headerTopLabel").html(msecTimeOut + "s");
+                    }
+                }
+                else {
+                    if (showmodal) {
+                        showmodal = false;
+                        //e.preventDefault();
+                        swal({
+                            title: "Sua sessão expirou",
+                            //text: "Sua sessão expirou!",
+                            // type: "warning",
+                            showCancelButton: false,
+                            confirmButtonClass: "btn-success",
+                            confirmButtonText: "Entrar novamente",
+                            cancelButtonClass: "btn-danger",
+                            cancelButtonText: "Sair",
+                            closeOnConfirm: false,
+                            closeOnCancel: true
+                        },
+                            function (isConfirm) {
+                                window.open(JSERVICE.rootApplication + "Home/LogoutImob", "_parent");
+                               /*
+                               if (isConfirm) {
+                                    msecTimeOut = (  Session.Timeout * 60);
+                                    window.open(JSERVICE.rootApplication + "Dashboard", "_parent");
+                                } else {
+                                    window.open(JSERVICE.rootApplication + "Home/LogoutImob", "_parent");
+                             }
+                            */
+                            });
+                        //});
+
+                        //setInterval(WriteSessionTimer, 0);
+                    }
+                }
+            }
+
+       //setInterval(WriteSessionTimer, 1000);
+
+        </script>
+        <div class="container-fluid">
+            <span id="headerTopLabel2"></span>
+            <form autocomplete="off">
+                @RenderBody()
+            </form>
+        </div>
+    </div><!--.page-content-->
+
+    <div class="modal fade"
+         id="modalEnvioConvite"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                        <i class="font-icon-close-2"></i>
+                    </button>
+                    <h4 class="modal-title">Enviar Convite</h4>
+                </div>
+                <div class="modal-body">
+
+                    Deseja realmente enviar um convite para este cliente?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-rounded btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-rounded btn-warning" onclick="SOH_CONVITE.GerarLink()">Gerar um Link</button>
+                    <button type="button" class="btn btn-rounded btn-success" onclick="SOH_CONVITE.Enviar()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div><!--.modal-->
+
+
+
+    <div class="modal fade bd-example-modal-sm"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel"
+         aria-hidden="true" id="modalModeloShare">
+        <div class="modal-dialog modal-dialogfull modal-lgfull">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                        <i class="font-icon-close-2"></i>
+                    </button>
+                    <h4 class="modal-title">Modelos</h4>
+                </div>
+                <div class="modal-body">
+                    @*Deseja remover esse item?*@
+
+                    <div class="row">
+                        <input type="hidden" id="hdnFileControlIdShare" name="hdnFileControlIdShare" value="0" />
+                        <input type="hidden" id="hdnClienteEmailShare" name="hdnClienteEmailShare" value="0" />
+                        <input type="hidden" id="hdnTipoModalidadeShare" name="hdnTipoModalidadeShare" value="0" />
+                        <div class="col-md-12">
+                            <fieldset class="form-group">
+                                <label for="drpModeloShare" class="form-label">Selecione um modelo</label>
+                                <select id="drpModeloShare" name="drpModeloShare" class="select2">
+                                </select>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="row" id="areaTemplateSetupShare" style="display:none">
+                        <div class="col-md-12 right-side">
+                            <button id="btnCarregarUltimoShare" type="button" class="btn btn-sm btn-square-icon-rounded pull-right" style="margin:5px">Carregar ultimo contrato gerado</button>
+                        </div>
+                        <div class="col-md-12" id="areaCampoShare">
+                            <textarea name="editorCorpoShare" id="editorCorpoShare" class="editorCorpoShare"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" id="areaTemplateShare" style="display:none">
+                        <div class="col-md-12">
+                            <iframe id="frameModeloShare" style="width:100%;height:500px" scrolling="auto">
+                            </iframe>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmSelecionarShare">Selecionar</button>
+                </div>
+            </div>
+        </div>
+    </div><!--.modal-->
+
+
+    <div class="modal fade"
+         id="modalSelecaoEmpresa"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                        <i class="font-icon-close-2"></i>
+                    </button>
+                    <h4 class="modal-title">Lista de Empresas</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <fieldset class="form-group">
+                                <label for="drpSelecioneEmpresa" class="form-label">Selecione uma empresa</label>
+                                <select id="drpSelecioneEmpresa" name="drpSelecioneEmpresa" class="select2">
+                                    <option value="">:: Selecione ::</option>
+                                </select>
+                            </fieldset>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-rounded btn-success" id="btnSelecioneEmpresa">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div><!--.modal-->
+
+
+
+
+    <div class="modal fade"
+         id="modalRegerarGrupoAssinantes"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                        <i class="font-icon-close-2"></i>
+                    </button>
+                    <h4 class="modal-title">Grupo de Assinantes</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <fieldset class="form-group">
+                                <label for="drpShareGrupoAssinantes" class="form-label">Grupo de Assinantes</label>
+                                <select id="drpShareGrupoAssinantes" name="drpShareGrupoAssinantes" class="select2">
+                                    <option value="">:: Selecione ::</option>
+                                </select>
+                            </fieldset>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-rounded btn-warning" id="btnRegerarAssinantes" onclick="JSERVICE.ClickAssinantesRegerar()">Regerar</button>
+                </div>
+            </div>
+        </div>
+    </div><!--.modal-->
+
+
+
+    <div class="modal fade"
+         id="modalAlterarCodigoImovel"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                        <i class="font-icon-close-2"></i>
+                    </button>
+                    <h4 class="modal-title">Alterar Código Ref. Imóvel</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" id="hdnCodRefModuloId" value="" />
+                            <input type="hidden" id="hdnCodRefModuloTipoId" value="" />
+                            <fieldset class="form-group">
+                                <label for="lblCodigoRefImovel" class="form-label">Imóvel Atual</label>
+                                <label id="lblCodigoRefImovel" name="lblCodigoRefImovel" class="form-control" style="background-color:#e9ecef"></label>
+                            </fieldset>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <fieldset class="form-group">
+                                <label for="txtCodigoRefImovel" class="form-label">Imóvel Novo</label>
+                                <input type="text" id="txtCodigoRefImovel" name="txtCodigoRefImovel" maxlength="30" class="form-control">
+
+                            </fieldset>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-rounded btn-warning" id="btn" onclick="JSERVICE.AtualizarCodigoImovelSave()">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div><!--.modal-->
+
+
+
+
+
+
+    <div class="modal fade"
+         id="modalAlterarCodigoAlternativo"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                        <i class="font-icon-close-2"></i>
+                    </button>
+                    <h4 class="modal-title">Código Ref. Imóvel <small>(Alternativo)</small></h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" id="hdnCodRefAltModuloId" value="" />
+                            <input type="hidden" id="hdnCodRefAltModuloTipoId" value="" />
+                            <fieldset class="form-group">
+                                <label for="lblCodigoRefImovelAlt" class="form-label">Código Atual</label>
+                                <label id="lblCodigoRefImovelAlt" name="lblCodigoRefImovelAlt" class="form-control" style="background-color:#e9ecef"></label>
+                            </fieldset>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <fieldset class="form-group">
+                                <label for="txtCodigoRefImovelAlt" class="form-label">Código Novo</label>
+                                <input type="text" id="txtCodigoRefImovelAlt" name="txtCodigoRefImovelAlt" maxlength="30" class="form-control">
+
+                            </fieldset>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-rounded btn-warning" id="btn" onclick="JSERVICE.AtualizarCodigoAltImovelSave()">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div><!--.modal-->
+
+
+    <div class="modal fade"
+         id="modalEnvioConviteListaImoveis"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                        <i class="font-icon-close-2"></i>
+                    </button>
+                    <h4 class="modal-title">Enviar Convite</h4>
+                </div>
+                <div class="modal-body">
+                    <fieldset class="form-group">
+                        <label class="form-label">Selecione um imóvel</label>
+                        <select id="cmbListaImoveisModal" class="form-control">
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-rounded btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-rounded btn-success" onclick="SOH_CONVITE.Enviar()">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div><!--.modal-->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.10/angular.min.js"></script>
+    <script src="~/Content/js/angular-locale_pt-br.js"></script>
+
+    <script src="@Url.Content("~/Content/js/lib/jquery/jquery-1.12.4.js?t=" + Guid.NewGuid())"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/jqueryui/jquery-ui.js")"></script>
+    @*<script type="text/javascript" src="@Url.Content("~/Scripts/_Variable.js?t=" + Guid.NewGuid())"></script>*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/_JSERVICE.js?t=" + Guid.NewGuid())"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/popper/popper.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/tether/tether.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/bootstrap/bootstrap.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/plugins.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/lobipanel/lobipanel.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/match-height/jquery.matchHeight.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/datetimepicker/bootstrap-datetimepicker.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/datetimepicker/locales/bootstrap-datetimepicker.pt-BR.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/bootstrap-maxlength/bootstrap-maxlength.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/bootstrap-maxlength/bootstrap-maxlength-init.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/datatables-net/datatables.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/input-mask/jquery.mask.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/blockUI/jquery.blockUI.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/bootstrap-sweetalert/sweetalert.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/bootstrap-select/bootstrap-select.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/select2/select2.full.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/odometer.min.js")"></script>
+    <script type="text/javascript" src="~/dist/js/Lobibox.min.js"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/summernote/summernote.min.js")"></script>
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript" src="@Url.Content("~/Content/js/app.js")"></script>
+
+    <script src="~/dist/js/jquery.signalR-2.0.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+
+
+</body>
+</html>

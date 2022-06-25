@@ -1,0 +1,159 @@
+﻿@model PortalVet.Models.ViewModelUpload
+@{
+    ViewBag.Title = "Arquivos";
+    Layout = null;
+
+}
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE HTML>
+<!--
+/*
+ * jQuery File Upload Plugin Basic Demo
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * https://opensource.org/licenses/MIT
+ */
+-->
+<html lang="en">
+<head>
+    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+    <meta charset="utf-8">
+    <title>Envio de arquivos</title>
+    <meta name="description" content="SohTec">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Upload/css/bootstrap.min.css")">
+    <!-- Generic page styles -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Upload/css/style.css")">
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Upload/css/jquery.fileupload.css")">
+</head>
+<body style="margin:0px;padding-top:10px !important">
+    @Html.Hidden("hdnTipoId")
+    @Html.Hidden("hdnIsMultiple", Model.IsMultiple ? "1" : "0")
+    <div class="container">
+
+        <br>
+        <!-- The fileinput-button span is used to style the file input field as button -->
+        <span class="btn btn-success fileinput-button">
+            <i class="glyphicon glyphicon-plus"></i>
+            @if (Model.IsMultiple)
+            {
+                <span>Selecione um ou mais arquivos...</span>
+                <input id="fileupload" type="file" name="files[]" multiple>
+            }
+            else
+            {
+                <span>Selecione um arquivo...</span>
+                <input id="fileupload" type="file" name="files">
+            }
+        </span>
+        <br>
+        <br>
+        <!-- The global progress bar -->
+        <div id="progress" class="progress">
+            <div class="progress-bar progress-bar-success"></div>
+        </div>
+        <!-- The container for the uploaded files -->
+        <div id="files" class="files"></div>
+        <br>
+
+    </div>
+    <script src="@Url.Content("~/Content/Upload/js/jquery.min.js")"></script>
+    <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="@Url.Content("~/Content/Upload/js/vendor/jquery.ui.widget.js")"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="@Url.Content("~/Content/Upload/js/jquery.iframe-transport.js")"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="@Url.Content("~/Content/Upload/js/jquery.fileupload.js")"></script>
+    <!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+    <script src="@Url.Content("~/Content/Upload/js/bootstrap.min.js")"></script>
+    <script>
+        /*jslint unparam: true */
+        /*global window, $ */
+        $(function () {
+
+            'use strict';
+            // Change this to the location of your server-side upload handler:
+            //var url = window.location.hostname === 'blueimp.github.io' ? '//jquery-file-upload.appspot.com/' : 'server/php/';
+            var url = '@Url.Action("SubmitSaveFile", "Assinatura")';
+            $('#fileupload').fileupload({
+
+                url: url,
+                //dataType: 'json',
+                autoUpload: true,
+                formData: { "tid": $("#hdnTipoId").val(), "codigo" : '@Model.ID', "email" : '@Model.ClienteEmail', "empresaid" : '@Model.EmpresaId' },
+                /*add: function (e, data) {
+                    data.submit();
+                },*/
+                progressall: function (e, data) {
+                    //console.log("PROGRESS:" + JSON.stringify(data));
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+
+                    $('#files').html('<p class="upl">Enviando arquivos. ' + progress + '%</p>');
+
+                    if (progress >= 100) {
+                        //alert("FINAL");
+                        switch ($("#hdnTipoId").val()) {
+                            case "1":
+                                window.parent.FILECONTROL1.CloseModalImage();
+                                break;
+                            case "2":
+                                window.parent.FILECONTROL2.CloseModalImage();
+                                break;
+                            case "3":
+                                window.parent.FILECONTROL3.CloseModalImage();
+                                break;
+                        }
+                    }
+
+                },
+                done: function (e, data) {
+                    //console.log("DONE:" + JSON.stringify(data.result));
+                    //console.log("STATUS:" + data.result.Status);
+                    var result = data.result;
+                    
+                    if (result.Status == 'OK') {
+                        $('#files').html("Arquivo(s) enviados com sucesso!");
+                        switch ($("#hdnTipoId").val()) {
+                            case "1":
+                                window.parent.FILECONTROL1.UpdateImage(result.Path, result.FileName, result.Base64, result.PathServer);
+                                window.parent.FILECONTROL1.CloseModalImage();
+                                break;
+                            case "2":
+                                window.parent.FILECONTROL2.UpdateImage(result.Path, result.FileName, result.Base64, result.PathServer);
+                                window.parent.FILECONTROL2.CloseModalImage();
+                                break;
+                            case "3":
+                                window.parent.FILECONTROL3.UpdateImage(result.Path, result.FileName, result.Base64, result.PathServer);
+                                window.parent.FILECONTROL3.CloseModalImage();
+                                break;
+                        }
+                    }
+                    else {
+                        if (result.Status == 'NOK_FILE') {
+                            $('#files').html("Arquivo incorreto!");
+                        }
+                        else {
+                            $('#files').html("Erro ao enviar arquivo!");
+                        }
+
+                    }
+                }
+            }).prop('disabled', !$.support.fileInput)
+                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        });
+
+
+    </script>
+</body>
+</html>

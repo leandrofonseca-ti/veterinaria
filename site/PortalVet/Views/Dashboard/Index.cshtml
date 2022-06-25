@@ -1,0 +1,1426 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@using System.Linq;
+@{
+
+
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewBag.Title = "Main";
+}
+
+@{
+    var isAdmin = "0";
+    var adminView = "display:none";
+    if (Model.ProfileId == PortalVet.Data.Helper.EnumAdminProfile.Administrador.GetHashCode())
+    {
+        isAdmin = "1";
+        adminView = "";
+    }
+    var areaCliente = "display:none";
+    var areaClinica = "display:none";
+    var areaGerente = "display:none";
+    var areaDados = "display:none";
+
+
+
+    if (Model.ProfileId == PortalVet.Data.Helper.EnumAdminProfile.Cliente.GetHashCode()
+|| Model.ProfileId == PortalVet.Data.Helper.EnumAdminProfile.Clinica.GetHashCode()
+|| Model.ProfileId == PortalVet.Data.Helper.EnumAdminProfile.Laudador.GetHashCode()
+|| Model.ProfileId == PortalVet.Data.Helper.EnumAdminProfile.Gerente.GetHashCode())
+    {
+        areaDados = "";
+    }
+
+}
+
+
+@section styles {
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/lib/charts-c3js/c3.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/performance.css")" />
+
+    <style>
+
+        .ui-datepicker {
+            z-index: 40 !important;
+        }
+
+        .error-field {
+            border: 2px solid red;
+        }
+
+        div.dropdown-menu.show {
+            z-index: 10 !important;
+        }
+
+        .user-card-row .tbl-cell.tbl-cell-photo2 {
+            width: 42px;
+            padding-right: 10px
+        }
+
+            .user-card-row .tbl-cell.tbl-cell-photo2 img {
+                display: block;
+                width: 55px;
+                height: 55px;
+                -webkit-border-radius: 50%;
+                border-radius: 50%
+            }
+
+        .font-size1 {
+            font-size: 16px !important;
+        }
+
+            a.linkPhone.ng-binding,
+            div.col.ng-binding,
+            .font-size1 div.ng-binding, .font-size1 span.label,
+            .font-size1 div.font-11.color-blue-grey-lighter.ng-binding,
+            .font-size1 div.font-11.color-blue-grey-lighter.uppercase.ng-binding {
+                font-size: 11px !important;
+            }
+
+            .font-size1 span.font-11.ng-binding,
+            .font-size1 div.color-blue-grey-lighter {
+                font-size: 10px !important;
+            }
+
+        .font-size2 span.font-11.ng-binding,
+        .font-size2 div.color-blue-grey-lighter {
+            font-size: 12px !important;
+        }
+
+        .font-size3 span.font-11.ng-binding,
+        .font-size3 div.color-blue-grey-lighter {
+            font-size: 14px !important;
+        }
+
+
+        .font-size4 span.font-11.ng-binding,
+        .font-size4 div.color-blue-grey-lighter {
+            font-size: 16px !important;
+        }
+
+
+
+        .font-size1 img.imgPhone {
+            width: 12px
+        }
+
+        .font-size1 a.linkPhone.ng-binding {
+            font-size: 12px !important;
+        }
+
+        .font-size2 {
+            font-size: 20px !important;
+        }
+
+            .font-size2 div.ng-binding, .font-size2 span.label,
+            .font-size2 div.font-11.color-blue-grey-lighter,
+            .font-size2 div.font-11.color-blue-grey-lighter.ng-binding,
+            .font-size2 div.font-11.color-blue-grey-lighter.uppercase.ng-binding {
+                font-size: 15px !important;
+            }
+
+
+            .font-size2 img.imgPhone {
+                width: 16px
+            }
+
+            .font-size2 a.linkPhone.ng-binding {
+                font-size: 16px !important;
+            }
+
+
+
+        .font-size3 {
+            font-size: 24px !important;
+        }
+
+            .font-size3 div.ng-binding, .font-size3 span.label,
+            .font-size3 div.font-11.color-blue-grey-lighter.ng-binding,
+            .font-size3 div.font-11.color-blue-grey-lighter.uppercase.ng-binding {
+                font-size: 19px !important;
+            }
+
+            .font-size3 img.imgPhone {
+                width: 20px
+            }
+
+            .font-size3 a.linkPhone.ng-binding {
+                font-size: 20px !important;
+            }
+
+
+
+
+        .font-size4 {
+            font-size: 28px !important;
+        }
+
+            .font-size4 div.ng-binding, .font-size4 span.label,
+            .font-size4 div.font-11.color-blue-grey-lighter,
+            .font-size4 div.font-11.color-blue-grey-lighter.ng-binding,
+            .font-size4 div.font-11.color-blue-grey-lighter.uppercase.ng-binding {
+                font-size: 22px !important;
+            }
+
+            .font-size4 img.imgPhone {
+                width: 23px
+            }
+
+            .font-size4 a.linkPhone.ng-binding {
+                font-size: 23px !important;
+            }
+    </style>
+
+
+
+
+
+
+    <style>
+        /*
+        .clsBackCard {
+            background-color: #b2edff !important;
+        }*/
+
+
+        .clsBackCode1 {
+            background-color: #b2edff !important;
+        }
+
+        .clsBackCode3 {
+            background-color: #b2edff !important;
+        }
+
+        .clsBackCode5 {
+            background-color: #e5ed788a !important;
+        }
+
+        .clsBackCode6 {
+            background-color: #3cca4b4a !important;
+        }
+
+
+        .trDisabled {
+            background-color: #ccc !important;
+        }
+
+        .alignleft {
+            float: left;
+        }
+
+        .alignright {
+            float: right;
+        }
+
+        .caminho_pao {
+            font-size: 1rem;
+            color: #6c7a86 !important;
+            margin-bottom: 1rem;
+            list-style: none;
+            background-color: #eceeef;
+            -webkit-border-radius: .25rem;
+            border-radius: .25rem;
+        }
+
+        .wrapper1, .wrapper2 {
+            width: 100%;
+            overflow-x: scroll;
+        }
+
+        .wrapper1 {
+            height: 20px;
+            overflow-y: hidden;
+        }
+
+        .wrapper2 {
+            overflow-y: scroll;
+        }
+
+        .div1 {
+            height: 20px;
+        }
+
+        .div2 {
+            overflow: none;
+        }
+
+
+        #tabs_dash-1-tab-2.fullscreen {
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            opacity: 1;
+        }
+
+
+        .task-card.estagio_0 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio00);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_1 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio01);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_2 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio02);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_3 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio03);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_4 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio04);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_5 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio05);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_6 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio06);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_7 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio07);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_10 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio10);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_11 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio11);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_12 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio12);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_13 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio13);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_14 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio14);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+        .task-card.estagio_15 {
+            padding-top: 20px;
+            border-top: solid 4px var(--estagio15);
+            -webkit-border-radius: 5px 5px .25rem .25rem;
+            border-radius: 5px 5px .25rem .25rem
+        }
+
+
+        .list {
+            border-radius: 8px;
+            margin: 5px;
+            /*  background-color: rgba(192, 192, 192, 0.4);*/
+            display: inline-block;
+            vertical-align: top;
+            white-space: normal;
+        }
+
+        .list-title {
+            font-size: 16px;
+            padding: 10px;
+            padding-left: 30px;
+            margin-bottom: 0px;
+            font-weight: bold;
+        }
+
+        .scrollable-list {
+            height: 400px;
+            width: 260px;
+        }
+
+        .sortable-cards {
+            padding: 10px;
+            min-height: 380px;
+            /* background-color: rgba(192, 192, 192, 0.4);*/
+        }
+
+        .card {
+            position: relative;
+            background-color: white;
+            box-sizing: border-box;
+            /* width: 230px;*/
+            padding: 10px 20px;
+            margin: 10px;
+        }
+
+        .card-subject {
+            padding-bottom: 10px;
+        }
+
+        .card-assignee {
+            opacity: 0.6;
+        }
+
+        .card-priority {
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            left: 5px;
+            width: 5px;
+            border-radius: 2px;
+            background: #86C285;
+        }
+
+        .priority-1 {
+            background: #ADADAD;
+        }
+
+        .priority-2 {
+            background: #86C285;
+        }
+
+        .priority-3 {
+            background: #EDC578;
+        }
+
+        .priority-4 {
+            background: #EF7D59;
+        }
+    </style>
+
+
+
+}
+
+
+@Html.Hidden("hdnPerfilNome", PortalVet.Helper.SessionsAdmin.PerfilNome)
+@Html.Hidden("hdnIsAdmin", isAdmin)
+@Html.Hidden("hdnEmpresaId", Model.EmpresaId)
+
+<header class="section-header" style="@adminView">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h3>Painel Inicial <span id="spLinkOptionsDash" style="float:right"></span></h3>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<div ng-controller="DashBoardController">
+
+    <div class="row" style="@adminView">
+
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    @if (Model.ListEmpresa.Count > 1)
+                    {
+                        <div class="tbl-cell  ">
+                            <div class="subtitle">Empresas</div>
+                        </div>
+                        <div class="col-lg-12 mt-lg-2">
+                            @foreach (var i in Model.ListEmpresa)
+                            {
+                                if (PortalVet.Helper.SessionsAdmin.EmpresaId == 0)
+                                {
+                                    PortalVet.Helper.SessionsAdmin.EmpresaId = Int32.Parse(Model.ListEmpresa.FirstOrDefault().Value);
+                                }
+                                if (PortalVet.Helper.SessionsAdmin.EmpresaId.ToString() == i.Value)
+                                {
+                                    <button type="button" class="btn btn-inline btn-secondary">@i.Text @Html.Raw(i.Total > 0 ? "<span class='label label-pill label-primary'>" + i.Total + "</span>" : "")</button>
+                                }
+                                else
+                                {
+                                    <button type="button" onclick="JSERVICE.SetEmpresa(@i.Value);" class="btn btn-inline btn-secondary-outline">@i.Text @Html.Raw(i.Total > 0 ? "<span class='label label-pill label-primary'>" + i.Total + "</span>" : "")</button>
+                                }
+                            }
+                        </div>
+                    }
+
+                </div>
+                <div class="col-lg-6">
+
+                    <div ng-show="ListProfiles.length > 1">
+                        <div class="tbl-cell  ">
+                            <div class="subtitle">Perfis</div>
+                        </div>
+
+                        <div class="col-lg-12 mt-lg-2">
+                            <span ng-repeat="profile in ListProfiles">
+                                <button ng-show="ListProfilesSelected == profile.Id" onclick="JSERVICE.SetProfileAngular(this)" class="btn btn-inline btn-secondary" data-pid="{{profile.Id}}" type="button">{{profile.Nome}}</button>
+                                <button ng-show="ListProfilesSelected != profile.Id" onclick="JSERVICE.SetProfileAngular(this)" class="btn btn-inline btn-secondary-outline" data-pid="{{profile.Id}}" type="button">{{profile.Nome}}</button>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-12 mt-lg-2">
+            &nbsp;
+
+        </div>
+
+        <div class="col-sm-6" ng-repeat="company in dashboard.listCompany">
+            <section class="widget widget-tabs-compact">
+                <div class="tab-content widget-tabs-content">
+                    <div class="tab-pane active" id="w-4-tab-1" role="tabpanel">
+                        <div class="user-card-row">
+                            <div class="tbl-row">
+                                <div class="tbl-cell tbl-cell-photoX tbl-cell-photo-64X">
+                                    <a href="@Url.Action("Index","User",new { @area="Administracao"})/?eid={{company.ID}}">
+                                        <img src="@Url.Content("~/Upload/Empresas/"){{company.IMAGEM}}" alt="">
+                                    </a>
+                                </div>
+                                <div class="tbl-cell">
+                                    <p class="user-card-row-name font-16"><a href="@Url.Action("Index","User",new { @area="Administracao"})/?eid={{company.ID}}">{{company.NOME}}</a></p>
+                                    @*<p class="user-card-row-mail font-14"><a href="#">Company Founder</a></p>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="w-4-tab-2" role="tabpanel">
+                        <center>&nbsp;</center>
+                    </div>
+                    <div class="tab-pane" id="w-4-tab-3" role="tabpanel">
+                        <center>&nbsp;</center>
+                    </div>
+                </div>
+                <div class="widget-tabs-nav colored">
+                    <ul class="tbl-row" role="tablist">
+                        <li class="nav-item">
+                            <div class="nav-link green active" data-toggle="tab" role="tab">
+                                @*<i class="font-icon font-icon-heart"></i>*@
+                                {{company.TOTAL_CRIACAO}}
+                                <br /><small>Criação</small>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="nav-link orange" data-toggle="tab" role="tab">
+                                @*<i class="font-icon font-icon-users-two"></i>*@
+                                {{company.TOTAL_EM_ANALISE}}
+                                <br /><small>Em Análise</small>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="nav-link blue" data-toggle="tab" role="tab">
+                                @*<i class="font-icon font-icon-eye"></i>*@
+                                {{company.TOTAL_CONCLUIDO}}
+                                <br /><small>Concluído</small>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+
+
+        @*<div class="col-sm-3">
+                <article id="totalClientes" class="statistic-box purple">
+                    <div>
+                        <div class="number">{ {dashboard.totalClientes}}</div>
+                        <div class="caption"><div>Total de Clientes</div></div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-sm-3">
+                <article class="statistic-box yellow">
+                    <div>
+                        <div class="number">{ {dashboard.totalExamesEmAndamento}}</div>
+                        <div class="caption"><div>Exames Em Andamento</div></div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-sm-3">
+                <article class="statistic-box green">
+                    <div>
+                        <div class="number">{ {dashboard.totalExamesConcluidos}}</div>
+                        <div class="caption"><div>Exames Concluídos</div></div>
+                    </div>
+                </article>
+            </div>
+
+
+            <div class="col-sm-3">
+                <article class="statistic-box red">
+                    <div>
+                        <div class="number">{ {dashboard.totalExamesCancelados}}</div>
+                        <div class="caption"><div>Exames Cancelados</div></div>
+                    </div>
+                </article>
+            </div>*@
+
+
+
+    </div>
+
+
+    <div class="row" style="@areaCliente">
+
+
+        <div class="col-sm-3">
+            <article class="statistic-box yellow">
+                <div>
+                    <div class="number">{{dashboard.totalExamesEmAndamento}}</div>
+                    <div class="caption"><div>Exames Em Andamento</div></div>
+                </div>
+            </article>
+        </div>
+
+        <div class="col-sm-3">
+            <article class="statistic-box green">
+                <div>
+                    <div class="number">{{dashboard.totalExamesConcluidos}}</div>
+                    <div class="caption"><div>Exames Concluídos</div></div>
+                </div>
+            </article>
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="row" style="@areaClinica">
+
+
+
+
+        <div class="col-sm-3">
+            <article class="statistic-box yellow">
+                <div>
+                    <div class="number">{{dashboard.totalExamesEmAndamento}}</div>
+                    <div class="caption"><div>Exames Em Andamento</div></div>
+                </div>
+            </article>
+        </div>
+
+        <div class="col-sm-3">
+            <article class="statistic-box green">
+                <div>
+                    <div class="number">{{dashboard.totalExamesConcluidos}}</div>
+                    <div class="caption"><div>Exames Concluídos</div></div>
+                </div>
+            </article>
+        </div>
+
+
+        <div class="col-sm-3">
+            <article class="statistic-box purple">
+                <div>
+                    <div class="number">{{dashboard.totalClientes}}</div>
+                    <div class="caption"><div>Clientes</div></div>
+                </div>
+            </article>
+        </div>
+
+
+        <div class="col-sm-3">
+            <article class="statistic-box red">
+                <div>
+                    <div class="number">{{dashboard.totalGerentes}}</div>
+                    <div class="caption"><div>Gerentes</div></div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+
+    <div class="row" style="@areaGerente">
+
+
+        <div class="col-sm-3">
+            <article class="statistic-box yellow">
+                <div>
+                    <div class="number">{{dashboard.totalExamesEmAndamento}}</div>
+                    <div class="caption"><div>Exames Em Andamento</div></div>
+                </div>
+            </article>
+        </div>
+
+        <div class="col-sm-3">
+            <article class="statistic-box green">
+                <div>
+                    <div class="number">{{dashboard.totalExamesConcluidos}}</div>
+                    <div class="caption"><div>Exames Concluídos</div></div>
+                </div>
+            </article>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+    @Html.Hidden("hdnControllerName", Model.ControllerName)
+    @Html.Hidden("hdnAreaName", Model.AreaName)
+
+
+    <section class="card_" id="areaBody" style="@areaDados" ng-controller="clienteController">
+
+
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-6">
+
+                    @if (Model.ListEmpresa.Count > 1)
+                    {
+                        <div class="tbl-cell  ">
+                            <div class="subtitle">Empresas</div>
+                        </div>
+                        <div class="col-lg-12 mt-lg-2">
+                            @foreach (var i in Model.ListEmpresa)
+                            {
+                                if (PortalVet.Helper.SessionsAdmin.EmpresaId == 0)
+                                {
+                                    PortalVet.Helper.SessionsAdmin.EmpresaId = Int32.Parse(Model.ListEmpresa.FirstOrDefault().Value);
+                                }
+                                if (PortalVet.Helper.SessionsAdmin.EmpresaId.ToString() == i.Value)
+                                {
+                                    <button type="button" class="btn btn-inline btn-secondary">@i.Text @Html.Raw(i.Total > 0 ? "<span class='label label-pill label-primary'>" + i.Total + "</span>" : "")</button>
+                                }
+                                else
+                                {
+                                    <button type="button" onclick="JSERVICE.SetEmpresa(@i.Value);" class="btn btn-inline btn-secondary-outline">@i.Text @Html.Raw(i.Total > 0 ? "<span class='label label-pill label-primary'>" + i.Total + "</span>" : "")</button>
+                                }
+                            }
+                        </div>
+                    }
+
+                </div>
+                <div class="col-lg-6">
+
+                    <div ng-show="ListProfiles.length > 1">
+                        <div class="tbl-cell  ">
+                            <div class="subtitle">Perfis</div>
+                        </div>
+
+                        <div class="col-lg-12 mt-lg-2">
+                            <span ng-repeat="profile in ListProfiles">
+                                <button ng-show="ListProfilesSelected == profile.Id" onclick="JSERVICE.SetProfileAngular(this)" class="btn btn-inline btn-secondary" data-pid="{{profile.Id}}" type="button">{{profile.Nome}}</button>
+                                <button ng-show="ListProfilesSelected != profile.Id" onclick="JSERVICE.SetProfileAngular(this)" class="btn btn-inline btn-secondary-outline" data-pid="{{profile.Id}}" type="button">{{profile.Nome}}</button>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+        <div class="col-lg-12">
+            &nbsp;
+
+
+        </div>
+        <div class="card-block_">
+
+
+            <div class="wrapper center-block">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+
+
+                        <section class="tabs-section">
+                            <div class="tabs-section-nav tabs-section-nav-icons">
+                                <div class="tbl">
+                                    <ul class="nav" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link  active show" id="abaAcoesRecentes" href="#tabs_dash-1-tab-1" role="tab" data-toggle="tab" aria-selected="false">
+                                                <span class="nav-link-in">
+                                                    <i class="glyphicon glyphicon-dashboard"></i>
+                                                    Exames
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" id="abaPipeline" style="display:none">
+                                            <a class="nav-link" href="#tabs_dash-1-tab-2" role="tab" data-toggle="tab" aria-selected="true">
+                                                <span class="nav-link-in">
+                                                    <span class="font-icon font-icon-list-rotate"></span>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pipeline&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div><!--.tabs-section-nav-->
+
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade active show" id="tabs_dash-1-tab-1">
+
+
+
+                                    <div class="panel-heading" role="tab" id="headingOne">
+
+                                        <div class="caminho_pao">
+
+                                            <div style="padding:11px 0px 0px 9px" class="alignleft">&nbsp;</div>
+
+
+                                            <h4 class="text-right" style="padding:10px 10px 10px 0px">
+                                                <a class="btn btn-inline btn-secondary  btn-sm " style="background-color:#545b62 !important;border-color:#4e555b !important;" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                    Pesquisa avançada&nbsp;&nbsp;
+                                                </a>
+                                            </h4>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+
+
+                                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="panel-body">
+
+
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+
+                                                    <div class="row">
+
+
+                                                        <div class="col-md-3">
+                                                            <fieldset class="form-group">
+                                                                <label for="txtFilterCodigo" class="form-label">Codigo</label>
+                                                                <input type="text" id="txtFilterCodigo" name="txtFilterCodigo" class="form-control codigo" maxlength="5">
+                                                            </fieldset>
+                                                        </div>
+
+                                                        <div class="col-md-3">
+                                                            <fieldset class="form-group">
+                                                                <label for="drpFilterSituacao" class="form-label">Tipo</label>
+                                                                <select id="drpFilterSituacao" name="drpFilterSituacao" class="select2">
+
+                                                                    @{
+                                                                        var list = (List<SelectListItem>)ViewData["ListSituacao"];
+
+                                                                        if (list.Count > 1)
+                                                                        {
+                                                                            <option value="">:: Selecione ::</option>
+                                                                        }
+                                                                        foreach (var item in list)
+                                                                        {
+                                                                            <option value="@item.Value">@item.Text</option>
+                                                                        }
+                                                                    }
+                                                                    <option value="ARQUIVADO">Arquivado</option>
+                                                                </select>
+                                                            </fieldset>
+                                                        </div>
+                                                        @*<div class="col-md-4 campoFiltro">
+                                                                <fieldset class="form-group">
+                                                                    <label for="txtFilterCPFCNPJ" class="form-label">CPF/CNPJ</label>
+                                                                    <input type="text" id="txtFilterCPFCNPJ" name="txtFilterCPFCNPJ" class="form-control">
+                                                                </fieldset>
+                                                            </div>*@
+
+
+                                                        <div class="col-md-3">
+
+                                                            <fieldset class="form-group">
+                                                                <label for="txtFilterDtInicio" class="form-label">Dt Exame Início</label>
+                                                                <input type="text" id="txtFilterDtInicio" name="txtFilterDtInicio" class="form-control data">
+                                                            </fieldset>
+                                                        </div>
+
+
+                                                        <div class="col-md-3">
+                                                            <fieldset class="form-group">
+                                                                <label for="txtFilterDtFim" class="form-label">Dt Exame Fim</label>
+                                                                <input type="text" id="txtFilterDtFim" name="txtFilterDtFim" class="form-control data">
+                                                            </fieldset>
+                                                        </div>
+
+
+
+
+
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <fieldset class="form-group"></fieldset>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <fieldset class="form-group">
+                                                                <button type="button" id="btnFilter" name="btnFilter" class="btn btn-inline btn-primary">Filtrar</button>
+                                                                <button type="button" id="btnClear" name="btnClear" class="btn btn-inline btn-default">Limpar</button>
+                                                            </fieldset>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <fieldset class="form-group"></fieldset>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="Rtable Rtable--collapse" style="z-index:10;display:none" id="areaGrid">
+
+                                        <div ng-repeat-start="item in acoes" class="Rtable-cell  clsBackCode{{item.SituacaoId}}  Boxzindex Percent-cell10" data-label="" style="z-index:-{{$index+1}} !important">
+                                            <div class="div-only-mobile">
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="uppercase" style="font-size:13px;font-weight:bold;margin-right:10px">
+                                                            <div>Ações</div>
+                                                        </div>
+                                                    </div>
+                                                    <a style="margin-top:5px" class="btn btn-inline btn-secondary btn-sm ladda-button" data-style="expand-right" data-size="s"
+                                                       target="_parent" href="@Url.Action("Save","Exame",new { @area = "Cadastro" })/{{item.Id}}">
+                                                        <span class="font-icon font-icon-pencil"></span>
+                                                        <span class="ladda-spinner"></span>
+                                                    </a>
+
+
+                                                    <a ng-show="item.SituacaoId == 6" style="margin-top:5px"  title="Arquivar Exame" class="btn btn-inline btn-secondary btn-sm ladda-button" data-style="expand-right" data-size="s"
+                                                       target="_parent" href="javascript:;" ng-click="ArquivarExame(item.Id)">
+                                                        <span class="font-icon font-icon-lock"></span>
+                                                        <span class="ladda-spinner"></span>
+                                                    </a>
+
+                                                    
+
+                                                </div>
+                                            </div>
+                                            <div class="div-no-mobile">
+                                                <div class="font-11 color-blue-grey-lighter">Ações</div>
+
+                                                <a style="margin-top:5px" class="btn btn-inline btn-secondary btn-sm ladda-button" data-style="expand-right" data-size="s"
+                                                   target="_parent" href="@Url.Action("Save","Exame",new { @area = "Cadastro" })/{{item.Id}}">
+                                                    <span class="font-icon font-icon-pencil"></span>
+                                                    <span class="ladda-spinner"></span>
+                                                </a>
+
+
+                                                <a ng-show="item.SituacaoId == 6" style="margin-top:5px" title="Arquivar Exame" class="btn btn-inline btn-secondary btn-sm ladda-button" data-style="expand-right" data-size="s"
+                                                   target="_parent"  href="javascript:;" ng-click="ArquivarExame(item.Id)">
+                                                    <span class="font-icon font-icon-lock"></span>
+                                                    <span class="ladda-spinner"></span>
+                                                </a>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="Rtable-cell Percent-cell15 clsBackCode{{item.SituacaoId}}" style="z-index:-{{$index+2}} !important">
+                                            <div class="div-only-mobile" data-label="Código">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="uppercase" style="font-size:13px;font-weight:bold;margin-right:10px">
+                                                            <div>Código</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col text-right">
+
+                                                        <div class="text-right">
+                                                            <strong>{{item.Id}}</strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="div-no-mobile" data-label="Código">
+                                                <div class="font-11 color-blue-grey-lighter">Código</div>
+                                                <strong>{{item.Id}}</strong>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="Rtable-cell Percent-cell15 clsBackCode{{item.SituacaoId}}  ">
+                                            <div class="div-only-mobile" data-label="Data Exame">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="uppercase" style="font-size:13px;font-weight:bold;margin-right:10px">
+                                                            <div>Data Exame</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col text-right">
+
+                                                        <div class="text-right">
+                                                            <small>{{item.DataExameFmt}}&nbsp;&nbsp;{{item.DataExameHH}}:{{item.DataExameMM}}</small><br />
+                                                            <small>{{item.NomeClinica}}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="div-no-mobile" data-label="Data Exame">
+                                                <div class="font-11 color-blue-grey-lighter">Data Exame</div>
+                                                <small>{{item.DataExameFmt}}&nbsp;&nbsp;{{item.DataExameHH}}:{{item.DataExameMM}}</small><br />
+                                                <small>{{item.NomeClinica}}</small>
+                                            </div>
+                                        </div>
+
+                                        <div class="Rtable-cell Boxzindex Percent-cell15 clsBackCode{{item.SituacaoId}}" data-label="Proprietário">
+                                            <div class="div-only-mobile" data-label="Proprietário">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="uppercase" style="font-size:13px;font-weight:bold;margin-right:10px">
+                                                            <div>Proprietário</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col text-right">
+
+                                                        <div class="text-right">
+                                                            <small>{{item.Proprietario}}</small><br />
+                                                            <div class="font-11 color-blue-grey-lighter">Paciente</div> 
+                                                            <small>{{item.Paciente}}</small>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="div-no-mobile" data-label="Proprietário">
+                                                <div class="font-11 color-blue-grey-lighter">Proprietário</div>
+                                                <small>{{item.Proprietario}}</small><br />
+                                                <div class="font-11 color-blue-grey-lighter">Paciente</div> 
+                                                <small>{{item.Paciente}}</small>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="Rtable-cell Boxzindex Percent-cell15 clsBackCode{{item.SituacaoId}}" data-label="Laudador">
+                                            <div class="div-only-mobile" data-label="Laudador">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="uppercase" style="font-size:13px;font-weight:bold;margin-right:10px">
+                                                            <div>Laudador</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col text-right">
+
+                                                        <div class="text-right">
+                                                            <small>{{item.NomeLaudador}}</small><br />
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="div-no-mobile" data-label="Laudador">
+                                                <div class="font-11 color-blue-grey-lighter">Laudador</div>
+                                                <small>{{item.NomeLaudador}}</small><br />
+
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="Rtable-cell  Boxzindex Percent-cell20 clsBackCode{{item.SituacaoId}}  ">
+                                            <div class="div-only-mobile" data-label="Situação">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="uppercase" style="font-size:13px;font-weight:bold;margin-right:10px">
+                                                            <div>Situação</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col text-right">
+
+                                                        <div class="text-right">
+                                                            <small>{{item.SituacaoNome}}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="div-no-mobile" data-label="Situação">
+                                                <div class="font-11 color-blue-grey-lighter">Situação</div>
+                                                <small>{{item.SituacaoNome}}</small>
+                                            </div>
+
+                                        </div>
+
+                                        <div ng-repeat-end style="width:100%;z-index:-{{$index+1}}0 !important"><hr style="margin:7px 0px 0px 0px !important;z-index:-{{$index+1}}0 !important" /></div>
+                                    </div>
+
+
+                                    <nav class="pager">
+                                        <div id="pageMessage"></div>
+                                        <ul class="pagination"></ul>
+                                    </nav>
+
+
+
+
+                                </div><!--.tab-pane-->
+                                <div role="tabpanel" class="tab-pane fade in" id="tabs_dash-1-tab-2">
+
+                                </div><!--.tab-pane-->
+                            </div><!--.tab-content-->
+                        </section>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </section>
+</div>
+
+
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalEnviarPDF">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Enviar Exame PDF</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                <div class="col-md-12">
+                    <fieldset class="form-group">
+                        @*<label for="drpFilterSituacao" class="form-label">Tipo</label>*@
+                        <select id="drpExameEnvio" name="drpExameEnvio" class="select2">
+                            <option value="">:: Selecione ::</option>
+                        </select>
+                    </fieldset>
+                </div>
+                <div class="col-md-12" style="display:none" id="areaOutroEmail">
+                    <fieldset class="form-group">
+                        <label for="txtOutroEmail" class="form-label">E-mail</label>
+                        <input type="text" id="txtOutroEmail" name="txtOutroEmail" class="form-control">
+                    </fieldset>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmEnvioPDF">Enviar PDF</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalRemove">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                Deseja remover esse item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmRemove">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+<modal-template-mensagem></modal-template-mensagem>
+
+
+@section scripts
+{
+    @Scripts.Render("~/Content/js/dx.all.js?t=" + Guid.NewGuid())
+    @Scripts.Render("~/Content/js/lib/html-sortable/html.sortable.js")
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/jqueryui/jquery-ui.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/lobipanel/lobipanel.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/match-height/jquery.matchHeight.min.js")"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/d3/d3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/lib/charts-c3js/c3.min.js")"></script>
+    @Scripts.Render("~/Scripts/Dashboard.Index.js?t=" + Guid.NewGuid())
+
+    <script>
+        $(document).ready(function () {
+            try {
+                $('.panel').lobiPanel({
+                    sortable: true
+                }).on('dragged.lobiPanel', function (ev, lobiPanel) {
+                    $('.dahsboard-column').matchHeight();
+                });
+
+
+            } catch (err) { }
+
+
+            $(window).resize(function () {
+                setTimeout(function () {
+                }, 1000);
+            });
+        });
+
+        function drawChartWeek() {
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn('string', 'Day');
+            dataTable.addColumn('number', 'Values');
+            // A column for custom tooltip content
+            dataTable.addColumn({ type: 'string', role: 'tooltip', 'p': { 'html': true } });
+            dataTable.addRows([
+                ['MON', 130, ' '],
+                ['TUE', 130, '130'],
+                ['WED', 180, '180'],
+                ['THU', 175, '175'],
+                ['FRI', 200, '200'],
+                ['SAT', 170, '170'],
+                ['SUN', 250, '250'],
+                ['MON', 220, '220'],
+                ['TUE', 220, ' ']
+            ]);
+
+            var options = {
+                height: 314,
+                legend: 'none',
+                areaOpacity: 0.18,
+                axisTitlesPosition: 'out',
+                hAxis: {
+                    title: '',
+                    textStyle: {
+                        color: '#fff',
+                        fontName: 'Proxima Nova',
+                        fontSize: 11,
+                        bold: true,
+                        italic: false
+                    },
+                    textPosition: 'out'
+                },
+                vAxis: {
+                    minValue: 0,
+                    textPosition: 'out',
+                    textStyle: {
+                        color: '#fff',
+                        fontName: 'Proxima Nova',
+                        fontSize: 11,
+                        bold: true,
+                        italic: false
+                    },
+                    baselineColor: '#16b4fc',
+                    ticks: [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350],
+                    gridlines: {
+                        color: '#1ba0fc',
+                        count: 15
+                    },
+                },
+                lineWidth: 2,
+                colors: ['#fff'],
+                curveType: 'function',
+                pointSize: 5,
+                pointShapeType: 'circle',
+                pointFillColor: '#f00',
+                backgroundColor: {
+                    fill: '#008ffb',
+                    strokeWidth: 0,
+                },
+                chartArea: {
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%'
+                },
+                fontSize: 11,
+                fontName: 'Proxima Nova',
+                tooltip: {
+                    trigger: 'selection',
+                    isHtml: true
+                }
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div_weekly'));
+            chart.draw(dataTable, options);
+        }
+
+
+        function drawChartMonth() {
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn('string', 'Day');
+            dataTable.addColumn('number', 'Values');
+            // A column for custom tooltip content
+            dataTable.addColumn({ type: 'string', role: 'tooltip', 'p': { 'html': true } });
+            dataTable.addRows([
+                ['MON', 130, ' '],
+                ['TUE', 130, '130'],
+                ['WED', 180, '180'],
+                ['THU', 175, '175'],
+                ['FRI', 200, '200'],
+                ['SAT', 170, '170'],
+                ['SUN', 250, '250'],
+                ['MON', 220, '220'],
+                ['TUE', 220, ' ']
+            ]);
+
+            var options = {
+                height: 314,
+                legend: 'none',
+                areaOpacity: 0.18,
+                axisTitlesPosition: 'out',
+                hAxis: {
+                    title: '',
+                    textStyle: {
+                        color: '#fff',
+                        fontName: 'Proxima Nova',
+                        fontSize: 11,
+                        bold: true,
+                        italic: false
+                    },
+                    textPosition: 'out'
+                },
+                vAxis: {
+                    minValue: 0,
+                    textPosition: 'out',
+                    textStyle: {
+                        color: '#fff',
+                        fontName: 'Proxima Nova',
+                        fontSize: 11,
+                        bold: true,
+                        italic: false
+                    },
+                    baselineColor: '#46c35f',
+                    ticks: [0, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350],
+                    gridlines: {
+                        color: '#46c35f',
+                        count: 15
+                    },
+                },
+                lineWidth: 2,
+                colors: ['#fff'],
+                curveType: 'function',
+                pointSize: 5,
+                pointShapeType: 'circle',
+                pointFillColor: '#f00',
+                backgroundColor: {
+                    fill: '#17a032',
+                    strokeWidth: 0,
+                },
+                chartArea: {
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%'
+                },
+                fontSize: 11,
+                fontName: 'Proxima Nova',
+                tooltip: {
+                    trigger: 'selection',
+                    isHtml: true
+                }
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div_monthly'));
+            chart.draw(dataTable, options);
+        }
+
+        function SetTab(option) {
+
+            if (option == 1) {
+                $("#chartTab1").addClass("active");
+                $("#chartTab2").removeClass("active");
+
+                $("#tabs-3-tab-2").removeClass("in");
+                $("#tabs-3-tab-2").removeClass("active");
+                $("#tabs-3-tab-2").removeClass("show");
+
+                $("#tabs-3-tab-1").addClass("in");
+                $("#tabs-3-tab-1").addClass("active");
+                $("#tabs-3-tab-1").addClass("show");
+                //drawChartWeek();
+            }
+            else {
+                $("#chartTab2").addClass("active");
+                $("#chartTab1").removeClass("active");
+
+
+                $("#tabs-3-tab-1").removeClass("in");
+                $("#tabs-3-tab-1").removeClass("active");
+                $("#tabs-3-tab-1").removeClass("show");
+
+                $("#tabs-3-tab-2").addClass("in");
+                $("#tabs-3-tab-2").addClass("active");
+                $("#tabs-3-tab-2").addClass("show");
+
+                drawChartMonth();
+
+            }
+        }
+    </script>
+}
+<!--.container-fluid-->

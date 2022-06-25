@@ -1,0 +1,211 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+    @Styles.Render("~/Content/css/separate/vendor/tags_editor.min.css")
+    @Styles.Render("~/Content/css/lib/jquery-minicolors/jquery.minicolors.css")
+    @Styles.Render("~/Content/css/separate/vendor/jquery.minicolors.min.css")
+    @Styles.Render("~/Content/fileupload/css/jquery.fileupload.css")
+
+    <style>
+        #msgError {
+            display: none;
+            background-color: #ffe7e7;
+            padding: 20px;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .form-control-error {
+            border: 2px solid red;
+        }
+
+        :root {
+            /* Make the mention background blue. */
+            --ck-color-mention-background: hsla(220, 100%, 54%, 0.4) !important;
+            /* Make the mention text dark grey. */
+            --ck-color-mention-text: hsl(0, 0%, 15%) !important;
+        }
+    </style>
+}
+
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnId", Model.ID)
+@Html.Hidden("hdnEmpresaId", Model.EmpresaId)
+@Html.Hidden("hdnPicture")
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5>  @Model.MenuNameSelected </h5>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action("Index","Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="#">  @Model.MenuNameSelected </a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+    </div>
+
+    <div class="card-block">
+        <div class="alert alert-danger alert-border-left alert-close alert-dismissible fade" role="alert" id="msgError">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div id="msgErrorText"><strong>Aviso!</strong> Favor, preencha os campos corretamente.</div>
+        </div>
+        <div class="row" id="areaDetail">
+            <div class="col-md-6 ">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Nome do modelo</label>
+                    <div class="form-label">
+                        <input name="txtNomeModelo" id="txtNomeModelo"
+                               type="text"
+                               placeholder="Nome do modelo"
+                               class="form-control">
+                    </div>
+
+                </fieldset>
+            </div>
+            <div class="col-md-6 ">
+            </div>
+            @*<div class="col-md-6">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Modalidade</label>
+                    <div class="form-label">
+                        <select id="drpModalidade" name="drpModalidade" class="select2" multiple="multiple">
+                            @{
+                                var listModalidade = (List<SelectListItem>)ViewData["ListModalidade"];
+
+                                foreach (var item in listModalidade)
+                                {
+                                    <option value="@item.Value" @(item.Selected ? "selected='selected'" : "")>@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </fieldset>
+            </div>*@
+            @*<div class="col-md-6">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Perfil</label>
+                    <div class="form-label">
+                        <select id="drpPerfil" name="drpPerfil" class="select2">
+                            @{
+                                var listPerfil = (List<SelectListItem>)ViewData["ListPerfil"];
+
+                                foreach (var item in listPerfil)
+                                {
+                                    <option value="@item.Value" @(item.Selected ? "selected='selected'" : "")>@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </fieldset>
+            </div>*@
+            @*<div class="col-md-4">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Número de locatários</label>
+                    <input name="txtLocatorios" id="txtLocatorios"
+                           type="text"
+                           maxlength="20"
+                           placeholder="Locatarios"
+                           class="form-control">
+
+                </fieldset>
+            </div>*@
+            @*<div class="col-md-4 d-none" id="DivFiador">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Número de fiadores</label>
+                    <input name="txtFiadores" id="txtFiadores"
+                           type="text"
+                           maxlength="20"
+                           placeholder="Fiadores"
+                           class="form-control ">
+
+                </fieldset>
+            </div>*@
+            <hr />
+            @*<div class="col-md-12">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Cabeçalho</label>
+                    <textarea name="editorCabecalho" id="editorCabecalho" class="editorCabecalho"></textarea>
+
+                </fieldset>
+            </div>*@
+            <div class="col-md-12">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Corpo do documento <small>( Para consultar a lista de variaveis digite '#' )</small></label>
+                    <textarea name="editorCorpo" id="editorCorpo" class="editorCorpo"></textarea>
+
+                </fieldset>
+            </div>
+            @*<div class="col-md-6">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Assinatura</label>
+
+
+                    <div class="form-label">
+                        <select id="drpRodape" name="drpRodape" class="select2">
+                            <option value="">:: Selecione ::</option>
+                            @{
+                                var listRodape = (List<SelectListItem>)ViewData["ListRodape"];
+
+                                foreach (var item in listRodape)
+                                {
+                                    <option value="@item.Value" @(item.Selected ? "selected='selected'" : "")>@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+
+                </fieldset>
+            </div>*@
+        </div>
+        <div class="col-md-12">
+            <fieldset class="form-group">
+
+                <button type="button" id="btnBack" name="btnBack" class="btn btn-inline btn-secondary-outline">Voltar</button>
+                <button type="button" id="btnSave" name="btnSave" class="btn btn-inline btn-primary-outline">Salvar</button>
+
+            </fieldset>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    @Scripts.Render("~/Content/js/ckeditor/build/ckeditor.js")
+    @Scripts.Render("~/Content/js/lib/jquery-minicolors/jquery.minicolors.min.js")
+    @Scripts.Render("~/Scripts/Cadastro/ContratoModelo.Save.js?t=" + Guid.NewGuid())
+
+    @Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.caret.min.js")
+    @Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.tag-editor.min.js")
+
+    @Scripts.Render("~/Content/fileupload/js/vendor/jquery.ui.widget.js")
+    @Scripts.Render("~/Content/fileupload/js/jquery.iframe-transport.js")
+    @Scripts.Render("~/Content/fileupload/js/jquery.fileupload.js")
+}

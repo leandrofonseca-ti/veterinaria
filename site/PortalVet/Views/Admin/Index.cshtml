@@ -1,0 +1,160 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    ViewBag.Title = "Login";
+}
+@section styles {
+    <style>
+        body { background-color: transparent !important; }
+        html {
+            /*background: url('Url.Content("~/Content/Images/bg-sohtec1.jpg")') no-repeat center center fixed;*/
+            background: -webkit-gradient(linear, left top, right top, from(#000000), to(#0082c6)) no-repeat;
+            background: -moz-linear-gradient(left, #000000, #0082c6);
+            filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#000000', EndColorStr='#0082c6');
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .panel { background-color: rgba(255, 255, 255, 0.50) !important; }
+        @@media (min-width: 1024px) {
+            html {
+                background: -webkit-gradient(linear, left top, right top, from(#000000), to(#0082c6)) no-repeat;
+                background: -moz-linear-gradient(left, #000000, #0082c6);
+                filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#000000', EndColorStr='#0082c6');
+                /*background: url('Url.Content("~/Content/Images/bg-sohtec1.jpg")') no-repeat center center fixed;*/
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+        }
+    </style>
+}
+
+@{
+
+    var classEmail = "";
+    var classPassword = "";
+    var mensagemErro = "";
+    var classCPFCNPJ = "";
+    var classTelefone = "";
+    if (ViewBag.erroMensagem != "")
+    {
+        mensagemErro = ViewBag.erroMensagem;
+    }
+    if (ViewBag.erroEmail)
+    {
+        classEmail = "form-control-error";
+    }
+    if (ViewBag.erroTelefone)
+    {
+        classTelefone = "form-control-error";
+    }
+    if (ViewBag.erroPassword)
+    {
+        classPassword = "form-control-error";
+    }
+
+
+
+}
+
+@{ string bg = "#ffffff"; }
+@if (ViewData["rootUrl"].ToString().IndexOf("sohtecdev", StringComparison.OrdinalIgnoreCase) > -1)
+{
+    bg = "#FFADAD";
+}
+
+
+@using (Html.BeginForm("LoginSubmit", "Home", FormMethod.Post, new { @class = "sign-box", id = "areaBody", style = "display:none; background-color:" + bg + "!important;" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Hidden("hdnUrl")
+    @Html.Hidden("hdnProfile")
+    @Html.Hidden("hdnSubdomain")
+    @Html.Hidden("hdnAba", "CPF_CNPJ")
+    <div style="text-align:center; padding: 10px;">
+        <img src="@Url.Content("~/Content/img/logo.png")" width="170" alt="">
+    </div>
+
+
+    <header class="sign-title"><small style="font-weight:bold">Autenticação</small></header>
+    <div id="msg_feedback" class="form-error-text-block" style="@(mensagemErro != ""?"":"display:none")">@mensagemErro</div>
+
+    <section class="tabs-section">
+        <!--<div class="tabs-section-nav">
+            <div class="tbl">
+                <ul class="nav" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="abaTab1" href="#tabs-2-tab-1" role="tab" data-toggle="tab">
+                            <span class="nav-link-in">
+                                <small>CPF/CNPJ</small>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="abaTab2" href="#tabs-2-tab-2" role="tab" data-toggle="tab">
+                            <span class="nav-link-in">
+                                <small>Telefone</small>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="abaTab3" href="#tabs-2-tab-3" role="tab" data-toggle="tab">
+                            <span class="nav-link-in">
+                                <small>E-mail/Senha</small>
+                            </span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>--><!--.tabs-section-nav-->
+
+        <!--<div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active show" id="tabs-2-tab-1">
+                <div class="form-group">
+                    <input type="text" class="form-control @classCPFCNPJ" id="txtCPFCNPJ" name="txtCPFCNPJ" placeholder="CPF/CNPJ" />
+                </div>
+
+
+                <button id="btnLogin2" type="button" class="btn btn-rounded">OK</button>
+            </div>--><!--.tab-pane-->
+            <!--<div role="tabpanel" class="tab-pane fade" id="tabs-2-tab-2">
+                <div role="tabpanel" class="tab-pane fade in active show" id="tabs-2-tab-1">
+                    <div class="form-group">
+                        <input type="text" class="form-control @classTelefone" id="txtTelefone" name="txtTelefone" placeholder="Telefone" />
+                    </div>
+
+
+                    <button id="btnLoginTelefone" type="button" class="btn btn-rounded">OK</button>
+                </div>--><!--.tab-pane-->
+            <!--</div>
+            <div role="tabpanel" class="tab-pane fade" id="tabs-2-tab-3">-->
+              
+
+                <div class="form-group">
+                    <input type="text" class="form-control @classEmail" id="txtEmail" name="txtEmail" placeholder="E-mail" autofocus />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control @classPassword" id="txtPassword" name="txtPassword" placeholder="Senha" />
+                </div>
+
+
+                <button id="btnLogin" type="button" class="btn btn-rounded">OK</button>
+            <!--</div>--><!--.tab-pane-->
+        <!--</div>--><!--.tab-content-->
+    </section>
+
+
+
+    <button id="btnLoginSafari" style="display:none" type="submit" class="btn btn-rounded">OK</button>
+
+    <div class="reset mt-2">
+        <center> <a href="@Url.Action("ResetPassword", "Admin")">Recuperar senha</a></center>
+    </div>
+}
+@section scripts {
+    @Scripts.Render("~/Scripts/Admin.Index.js?t=" + Guid.NewGuid())
+}

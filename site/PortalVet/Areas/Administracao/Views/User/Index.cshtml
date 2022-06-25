@@ -1,0 +1,203 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+
+
+}
+
+@Html.Hidden("hdnUsuarioId", Model.UserId)
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnFilterEmpresaId")
+
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5 id="ltlTitle"></h5>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action("Index","Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="#" id="controllerName"></a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-inline" id="btnNovoRegistro">Novo Registro</button>
+        </div>
+
+    </div>
+    <div class="card-block">
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <fieldset class="form-group">
+                            <label for="drpFilterEmpresa" class="form-label">Empresa</label>
+                            <select id="drpFilterEmpresa" name="drpFilterEmpresa" class="select2">
+                                <option value="">:: Selecione ::</option>
+                                @{
+                                    var listEmpresa = (List<SelectListItem>)ViewData["ListEmpresa"];
+                                    var primeirosItens = listEmpresa.Where(n => n.Value == "1").ToList();
+                                    listEmpresa = listEmpresa.Where(n => n.Value != "1").OrderBy(n => n.Text).ToList();
+                                    primeirosItens.AddRange(listEmpresa);
+                                    foreach (var item in primeirosItens)
+                                    {
+                                        <option value="@item.Value">@item.Text.ToUpper().Trim()</option>
+                                    }
+                                }
+                            </select>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <fieldset class="form-group">
+                            <label for="drpFilterPerfil" class="form-label">Perfil</label>
+                            <select id="drpFilterPerfil" name="drpFilterPerfil" class="select2">
+                                <option value="">:: Selecione ::</option>
+                                @{
+                                    var list = (List<SelectListItem>)ViewData["ListPerfil"];
+                                    foreach (var item in list)
+                                    {
+                                        <option value="@item.Value">@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-4">
+                        <fieldset class="form-group">
+                            <label for="txtFilterEmail" class="form-label">E-mail</label>
+                            <input name="txtFilterEmail" id="txtFilterEmail"
+                                   type="text"
+                                   placeholder="E-mail"
+                                   class="form-control">
+                        </fieldset>
+                    </div>
+
+
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <fieldset class="form-group"></fieldset>
+                    </div>
+
+                    <div class="col-md-4">
+                        <fieldset class="form-group">
+                            <button type="button" id="btnFilter" name="btnFilter" class="btn btn-inline btn-primary">Filtrar</button>
+                            <button type="button" id="btnClear" name="btnClear" class="btn btn-inline btn-default">Limpar</button>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-4">
+                        <fieldset class="form-group"></fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table id="tbGrid" class="display table table-bordered dataTable" cellspacing="0" width="100%">
+            <colgroup>
+                <col style="width: 33px !important;" />
+                <col style="width: 33px !important;" />
+            </colgroup>
+            <thead>
+                <tr>
+
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th class="col_sort" col_order="1">Empresa</th>
+                    <th class="col_sort" col_order="2">Nome</th>
+                    <th class="col_sort" col_order="3">E-mail</th>
+                    <th>Perfil</th>
+                    <th class="col_sort" col_order="4">Ativo</th>
+                    <th>Login</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <nav class="pager">
+            <div id="pageMessage"></div>
+            <ul class="pagination">
+            </ul>
+        </nav>
+    </div>
+</section>
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalRemove">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                Deseja remover esse item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmRemove">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalLogin">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                Deseja se logar com este usuário?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmLogin">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+@section scripts {
+
+    @Scripts.Render("~/Scripts/Administracao/User.Index.js?t=" + Guid.NewGuid())
+}

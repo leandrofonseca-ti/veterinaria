@@ -1,0 +1,389 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+    @Styles.Render("~/Content/css/lib/jquery-minicolors/jquery.minicolors.css")
+    @Styles.Render("~/Content/css/separate/vendor/jquery.minicolors.min.css")
+    @Styles.Render("~/Content/fileupload/css/jquery.fileupload.css")
+    @Styles.Render("~/Content/css/separate/vendor/tags_editor.min.css")
+    @Styles.Render("~/Content/css/separate/pages/activity.min.css")
+    @Styles.Render("~/Content/css/lib/ion-range-slider/ion.rangeSlider.css")
+    @Styles.Render("~/Content/css/lib/ion-range-slider/ion.rangeSlider.skinHTML5.css")
+
+    <style>
+        #msgError {
+            display: none;
+            background-color: #ffe7e7;
+            padding: 20px;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .form-control-error {
+            border: 2px solid red;
+        }
+
+        .sizeComboText span.select2.select2-container.select2-container--default {
+            max-width: 90% !important;
+        }
+
+        .sizeComboText2 span.select2.select2-container.select2-container--default {
+            max-width: 80% !important;
+        }
+    </style>
+}
+
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnId", Model.ID)
+@Html.Hidden("hdnEmpresaId", Model.EmpresaId)
+@*@Html.Hidden("hdnPathUrlUser", Url.Content(Model.PathUrlUser))*@
+@Html.Hidden("hdnPicture")
+@Html.Hidden("hdnTabDefault")
+@Html.Hidden("hdnDistribuicaoSegmentoConsultor")
+
+@Html.Hidden("hdnValorMinLOCACAO", 100)
+@Html.Hidden("hdnValorMaxLOCACAO", 100)
+@Html.Hidden("hdnValorMinVENDAS", 100)
+@Html.Hidden("hdnValorMaxVENDAS", 100)
+
+
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5 id="ltlTitle"></h5>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi">  @Model.MenuNameSelected  </li>
+            @*<li class="active" id="actionName"></li>*@
+        </ol>
+
+
+
+    </div>
+
+
+    <div class="card-block">
+
+
+
+        <div class="alert alert-danger alert-border-left alert-close alert-dismissible fade" role="alert" id="msgError">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div id="msgErrorText">Preencha corretamente abaixo</div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Nome</label>
+                    <input name="txtNome" id="txtNome"
+                           type="text" maxlength="100"
+                           class="form-control"
+                           placeholder="Nome">
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Sobrenome</label>
+                    <input name="txtSobrenome" id="txtSobrenome"
+                           type="text" maxlength="100"
+                           class="form-control"
+                           placeholder="Sobrenome">
+                </fieldset>
+            </div>
+
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">CPF/CNPJ</label>
+                    <input name="txtCPFCNPJ" id="txtCPFCNPJ"
+                           type="text" maxlength="50"
+                           class="form-control"
+                           placeholder="CPF/CNPJ">
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Telefone</label>
+                    <input name="txtTelefone" id="txtTelefone"
+                           type="text" maxlength="50"
+                           class="form-control telefone"
+                           placeholder="Telefone">
+                </fieldset>
+            </div>
+
+
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Telefone 2</label>
+                    <input name="txtTelefone2" id="txtTelefone2"
+                           type="text" maxlength="50"
+                           class="form-control telefone"
+                           placeholder="Telefone">
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">E-mail</label>
+                    <input name="txtEmail" id="txtEmail"
+                           type="text" maxlength="100"
+                           class="form-control"
+                           placeholder="E-mail">
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="row" id="controlEdicaoSenha" style="display:none">
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="checkbox-toggle">
+                        <input type="checkbox" id="chkHabilita" name="chkHabilita" />
+                        <label for="chkHabilita">Alterar Senha</label>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row " id="controlCamposSenha" style="display:none">
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label" for="txtSenha">Senha</label>
+                    <input name="txtSenha" id="txtSenha" maxlength="50"
+                           type="password" autocomplete="off" value=""
+                           placeholder="Senha"
+                           class="form-control">
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label" for="txtSenhaConfirma">Confirma Senha</label>
+                    <input name="txtSenhaConfirma" id="txtSenhaConfirma" maxlength="50"
+                           type="password" autocomplete="off"
+                           placeholder="Confirme Senha" value=""
+                           class="form-control">
+                </fieldset>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+
+
+
+            <div class="col-md-12">
+                <fieldset class="form-group">
+
+                    <button type="button" id="btnBack" name="btnBack" class="btn btn-inline btn-secondary-outline">Voltar</button>
+
+                    <button type="button" id="btnSave" name="btnSave" class="btn btn-inline btn-primary-outline">Salvar</button>
+
+                </fieldset>
+            </div>
+
+        </div><!--.row-->
+
+
+
+    </div>
+</section>
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalConfirm">
+    <div class="modal-dialog modal-lg" style="max-width: 600px !important;">
+        <div class="modal-content" style="width:600px !important;">
+
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmConvite">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+
+<div class="modal fade bd-example-modal-lg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalView">
+    <div class="modal-dialog modal-lg" style="max-width: 800px !important;">
+        <div class="modal-content" style="width:800px !important;">
+
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Visualização</h4>
+            </div>
+            <div class="modal-body" id="modalBodyView">
+                <div class="row">
+
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Nome</label>
+                            <div class="form-label">
+                                <label id="lblNome" class="form-control"></label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Sobrenome</label>
+                            <label id="lblSobreNome" class="form-control"></label>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">E-mail</label>
+                            <label id="lblEmail" class="form-control"></label>
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Usuário</label>
+                            <label id="lblUsuario" class="form-control"></label>
+                        </fieldset>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Estado</label>
+                            <label id="lblEstado" class="form-control"></label>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Cidade</label>
+                            <label id="lblCidade" class="form-control"></label>
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">CRECI</label>
+                            <label id="lblCRECI" class="form-control"></label>
+                        </fieldset>
+
+
+                        <fieldset class="form-group">
+                            <label class="form-label">Foto</label>
+                            <div class="col-md-12">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <img id="imgFotoView" style="max-width:150px;max-height:150px;" alt="">&nbsp;&nbsp;
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </fieldset>
+
+                    </div>
+                    <div class="col-md-6">
+                        <fieldset class="form-group">
+                            <label class="form-label">Telefone 1</label>
+                            <label id="lblTelefone1" class="form-control"></label>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <label class="form-label">Telefone 2</label>
+                            <label id="lblTelefone2" class="form-control"></label>
+                        </fieldset>
+
+
+                        <fieldset class="form-group">
+                            <label class="form-label">Telefone 3</label>
+                            <label id="lblTelefone3" class="form-control"></label>
+                        </fieldset>
+
+
+                    </div>
+
+                    <div class="col-md-12">
+
+                        <fieldset class="form-group">
+                            <label class="form-label"><strong>Perfil (Fale mais sobre você, perfil de imóvel que trabalha, formação...)</strong></label>
+                            <label for="lblMensagem" class="col-sm-4 col-form-label"></label>
+                            <label id="lblMensagem" class="form-control"></label>
+                        </fieldset>
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+@section scripts {
+    @*@Scripts.Render("~/Content/js/lib/jquery-minicolors/jquery.minicolors.min.js")
+
+        @Scripts.Render("~/Content/js/lib/ion-range-slider/ion.rangeSlider.js")*@
+
+    @Scripts.Render("~/Scripts/Cadastro/Gerente.Save.js?t=" + Guid.NewGuid())
+
+    @*@Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.caret.min.js")
+        @Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.tag-editor.min.js")*@
+
+
+
+    @*@Scripts.Render("~/Content/fileupload/js/vendor/jquery.ui.widget.js")
+        @Scripts.Render("~/Content/fileupload/js/jquery.iframe-transport.js")*@
+    @*@Scripts.Render("~/Content/fileupload/js/jquery.fileupload.js")*@
+
+}

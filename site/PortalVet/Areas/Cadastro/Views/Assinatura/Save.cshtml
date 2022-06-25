@@ -1,0 +1,215 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+    @Styles.Render("~/Content/css/separate/vendor/tags_editor.min.css")
+    @Styles.Render("~/Content/css/lib/jquery-minicolors/jquery.minicolors.css")
+    @Styles.Render("~/Content/css/separate/vendor/jquery.minicolors.min.css")
+    @Styles.Render("~/Content/fileupload/css/jquery.fileupload.css")
+
+    <style>
+        #msgError {
+            display: none;
+            background-color: #ffe7e7;
+            padding: 20px;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .form-control-error {
+            border: 2px solid red;
+        }
+
+        :root {
+            /* Make the mention background blue. */
+            --ck-color-mention-background: hsla(220, 100%, 54%, 0.4) !important;
+            /* Make the mention text dark grey. */
+            --ck-color-mention-text: hsl(0, 0%, 15%) !important;
+        }
+    </style>
+}
+
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnId", Model.ID)
+@Html.Hidden("hdnEmpresaId", Model.EmpresaId)
+@Html.Hidden("hdnPicture")
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5>  @Model.MenuNameSelected </h5>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action("Index","Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="#">  @Model.MenuNameSelected </a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+    </div>
+
+    <div class="card-block">
+        <div class="alert alert-danger alert-border-left alert-close alert-dismissible fade" role="alert" id="msgError">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div id="msgErrorText"><strong>Aviso!</strong> Favor, preencha os campos corretamente.</div>
+        </div>
+        <div class="row" id="areaDetail">
+            <div class="col-md-6 ">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Nome da Assinatura</label>
+                    <div class="form-label">
+                        <input name="txtNomeModelo" id="txtNomeModelo"
+                               type="text"
+                               placeholder="Nome da Assinatura"
+                               class="form-control">
+                    </div>
+
+                </fieldset>
+            </div>
+            <div class="col-md-6 ">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Nome (Assinatura)</label>
+                    <div class="form-label">
+                        <input name="txtNomeAssinatura" id="txtNomeAssinatura"
+                               type="text"
+                               placeholder="Nome (Assinatura)"
+                               class="form-control">
+                    </div>
+
+                </fieldset>
+            </div>
+
+
+            <div class="col-md-6 ">
+                <fieldset class="form-group">
+
+                    <label class="form-label">CRM (Assinatura)</label>
+                    <div class="form-label">
+                        <input name="txtCRMAssinatura" id="txtCRMAssinatura"
+                               type="text"
+                               placeholder="CRM (Assinatura)"
+                               class="form-control">
+                    </div>
+
+                </fieldset>
+            </div>
+
+            <div class="col-md-6 ">
+                <fieldset class="form-group">
+
+                    <label class="form-label">Profissão (Assinatura)</label>
+                    <div class="form-label">
+                        <input name="txtProfissaoAssinatura" id="txtProfissaoAssinatura"
+                               type="text"
+                               placeholder="Profissão (Assinatura)"
+                               class="form-control">
+                    </div>
+
+                </fieldset>
+            </div>
+
+
+
+            <div class="col-md-6 ">
+                <fieldset class="form-group">
+                    @Html.Hidden("hdnArquivo1")
+                    <div class="row">
+                        <div class="col-sm-12 m-auto">
+                            <div class="input-group mt-4" id="areaUpload1" onclick="FILECONTROL1.OpenModalImage('@Url.Action("UploadFileControl","Assinatura")')">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend1"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span></span>
+                                </div>
+                                <input type="text" id="txtArquivo1" name="txtArquivo1" class="form-control" disabled readonly placeholder="Imagem da assinatura" aria-describedby="inputGroupPrepend1" />
+                            </div>
+
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <input type="hidden" id="hdnPathControl1" value="@Url.Content("~/Assinatura")" />
+                                            <input type="hidden" id="hdnTotalFotos1" value="0" />
+                                            <ul class="list-group" id="listImages1" style="list-style-type: none; margin-left: 0px !important"></ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+
+
+
+        </div>
+        <div class="col-md-12">
+            <fieldset class="form-group">
+
+                <button type="button" id="btnBack" name="btnBack" class="btn btn-inline btn-secondary-outline">Voltar</button>
+                <button type="button" id="btnSave" name="btnSave" class="btn btn-inline btn-primary-outline">Salvar</button>
+
+            </fieldset>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="myUpload"
+     style=" height: 500px !important">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a style="cursor:pointer" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    Fechar
+                </a>
+
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                <p class="modal-title" id="myModalLabel"><small>Arquivo no formato (*.png|*.jpg|*.jpeg)</small></p>
+                <iframe id="frmUploads" src="" frameborder="0" style="width: 100%; height: 100%" scrolling="no"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+@section scripts {
+    @Scripts.Render("~/Content/js/ckeditor/build/ckeditor.js")
+    @Scripts.Render("~/Content/js/lib/jquery-minicolors/jquery.minicolors.min.js")
+    @Scripts.Render("~/Scripts/Cadastro/Assinatura.Save.js?t=" + Guid.NewGuid())
+
+    @Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.caret.min.js")
+    @Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.tag-editor.min.js")
+
+    @Scripts.Render("~/Content/fileupload/js/vendor/jquery.ui.widget.js")
+    @Scripts.Render("~/Content/fileupload/js/jquery.iframe-transport.js")
+    @Scripts.Render("~/Content/fileupload/js/jquery.fileupload.js")
+}

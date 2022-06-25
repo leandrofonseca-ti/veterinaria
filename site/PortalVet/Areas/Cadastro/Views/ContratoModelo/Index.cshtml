@@ -1,0 +1,98 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+
+
+}
+
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnEmpresaId", Model.EmpresaId)
+
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5>  @Model.MenuNameSelected </h5>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action("Index","Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="#">  @Model.MenuNameSelected </a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-inline" id="btnNovoRegistro">Novo Registro</button>
+        </div>
+
+    </div>
+    <div class="card-block">
+
+
+
+        <table id="tbGrid" class="display table table-bordered" cellspacing="0" width="100%">
+            <colgroup>
+                <col style="width: 33px !important;" />
+                <col style="width: 33px !important;" />
+            </colgroup>
+            <thead>
+                <tr>
+
+                    <th></th>
+                    <th></th>
+                    <th class="col_sort" col_order="1">Nome Modelo</th>
+                    @*<th class="col_sort" col_order="2">Perfil</th>*@
+                    @*<th></th>*@
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <nav class="pager">
+            <div id="pageMessage"></div>
+            <ul class="pagination"></ul>
+        </nav>
+    </div>
+</section>
+
+
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalRemove">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                Deseja remover esse corretor?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmRemove">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+@section scripts {
+    @Scripts.Render("~/Scripts/Cadastro/ContratoModelo.Index.js?t=" + Guid.NewGuid())
+}

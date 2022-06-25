@@ -1,0 +1,266 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+    @*@Styles.Render("~/Content/css/lib/jquery-minicolors/jquery.minicolors.css")
+    @Styles.Render("~/Content/css/separate/vendor/jquery.minicolors.min.css")*@
+    @Styles.Render("~/Content/fileupload/css/jquery.fileupload.css")
+    @*@Styles.Render("~/Content/css/separate/vendor/tags_editor.min.css")
+    @Styles.Render("~/Content/css/separate/pages/activity.min.css")
+    @Styles.Render("~/Content/css/lib/ion-range-slider/ion.rangeSlider.css")
+    @Styles.Render("~/Content/css/lib/ion-range-slider/ion.rangeSlider.skinHTML5.css")*@
+
+    <style>
+        #msgError {
+            display: none;
+            background-color: #ffe7e7;
+            padding: 20px;
+        }
+
+        .show {
+            display: block !important;
+        }
+
+        .form-control-error {
+            border: 2px solid red;
+        }
+
+        .sizeComboText span.select2.select2-container.select2-container--default {
+            max-width: 90% !important;
+        }
+
+        .sizeComboText2 span.select2.select2-container.select2-container--default {
+            max-width: 80% !important;
+        }
+    </style>
+}
+
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnId", Model.ID)
+@Html.Hidden("hdnEmpresaId", Model.EmpresaId)
+@Html.Hidden("hdnPathUrlUser", Url.Content(Model.PathUrlUser))
+@Html.Hidden("hdnPicture")
+@Html.Hidden("hdnTabDefault")
+@Html.Hidden("hdnDistribuicaoSegmentoConsultor")
+
+
+
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5 id="ltlTitle"></h5>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi">  @Model.MenuNameSelected  </li>
+            @*<li class="active" id="actionName"></li>*@
+        </ol>
+    </div>
+
+    <div class="card-block">
+
+        <div class="alert alert-danger alert-border-left alert-close alert-dismissible fade" role="alert" id="msgError">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <div id="msgErrorText">Preencha corretamente abaixo</div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Nome</label>
+                    <input name="txtNome" id="txtNome"
+                           type="text" maxlength="100"
+                           class="form-control"
+                           placeholder="Nome">
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">E-mail</label>
+                    <input name="txtEmailCompany" id="txtEmailCompany"
+                           type="text" maxlength="100"
+                           class="form-control"
+                           placeholder="E-mail">
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Whatsapp</label>
+                    <input name="txtWhatsapp" id="txtWhatsapp"
+                           type="text" maxlength="100"
+                           class="form-control"
+                           placeholder="Whatsapp">
+                </fieldset>
+            </div>
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Url</label>
+                    <input name="txtUrl" id="txtUrl"
+                           type="text" maxlength="200"
+                           class="form-control"
+                           placeholder="Url">
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <fieldset class="form-group" id="areaFoto">
+                    <label class="form-label">Foto</label>
+                    <div class="col-md-12">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <img src="@Url.Content("~/Content/img/avatar-1-128.png")" id="uplImage" style="max-width:60px;max-height:60px;" alt="">&nbsp;&nbsp;
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input type="hidden" id="hdnFileFoto" name="hdnFileFoto" />
+                                        <span class="btn btn-inline btn-primary btn-sm ladda-button fileinput-button" id="btnImageAdd">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                            <span>Adicionar</span>
+                                            <!-- The file input field used as target for the file upload widget -->
+                                            <input id="fileupload" type="file" name="files[]" />
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="btn btn-inline btn-danger btn-sm ladda-button fileinput-button" id="btnImageRemove" style="display:none">
+                                            <i class="glyphicon glyphicon-minus"></i>
+                                            <span>Remover</span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                    <div class="col-md-12">
+                        <!-- The global progress bar -->
+                        <div id="progress" class="progress">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                        <!-- The container for the uploaded files -->
+                        <div id="files" class="files"></div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset class="form-group">
+                    <label class="form-label">Chave Integração</label>
+                    <input name="txtChave" id="txtChave"
+                           type="text" maxlength="100"
+                           class="form-control" readonly="readonly"
+                           placeholder="Nome">
+                </fieldset>
+            </div>
+
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="form-group">
+                    <label class="form-label">Texto</label>
+                    <div class="form-label">
+                        <textarea name="txtTexto" id="txtTexto"
+                                  class="form-control"></textarea>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-12">
+                <fieldset class="form-group">
+
+                    <button type="button" id="btnBack" name="btnBack" class="btn btn-inline btn-secondary-outline">Voltar</button>
+
+                    <button type="button" id="btnSave" name="btnSave" class="btn btn-inline btn-primary-outline">Salvar</button>
+
+                </fieldset>
+            </div>
+
+        </div><!--.row-->
+
+
+
+    </div>
+</section>
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalConfirm">
+    <div class="modal-dialog modal-lg" style="max-width: 600px !important;">
+        <div class="modal-content" style="width:600px !important;">
+
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmConvite">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+ 
+@section scripts {
+    @*@Scripts.Render("~/Content/js/lib/jquery-minicolors/jquery.minicolors.min.js")
+
+        @Scripts.Render("~/Content/js/lib/ion-range-slider/ion.rangeSlider.js")*@
+
+    @Scripts.Render("~/Scripts/Cadastro/Clinica.Save.js?t=" + Guid.NewGuid())
+
+    @*@Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.caret.min.js")
+    @Scripts.Render("~/Content/js/lib/jquery-tag-editor/jquery.tag-editor.min.js")*@
+
+    @Scripts.Render("~/Content/fileupload/js/vendor/jquery.ui.widget.js")
+    @Scripts.Render("~/Content/fileupload/js/jquery.iframe-transport.js")
+    @Scripts.Render("~/Content/fileupload/js/jquery.fileupload.js")
+
+}

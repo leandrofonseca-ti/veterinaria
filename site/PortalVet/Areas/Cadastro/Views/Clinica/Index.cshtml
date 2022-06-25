@@ -1,0 +1,270 @@
+﻿@model PortalVet.Data.Helper.VMHome
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section styles {
+
+    <style>
+
+
+        .error-field {
+            border: 2px solid red;
+        }
+
+        .sizeComboText span.select2.select2-container.select2-container--default {
+            max-width: 75% !important;
+        }
+
+        .trDisabled {
+            background-color: #ccc !important;
+        }
+
+        .alignleft {
+            float: left;
+        }
+
+        .alignright {
+            float: right;
+        }
+
+        .caminho_pao {
+            font-size: 1rem;
+            color: #6c7a86 !important;
+            /*padding: .75rem 1rem;*/
+            margin-bottom: 1rem;
+            list-style: none;
+            background-color: #eceeef;
+            -webkit-border-radius: .25rem;
+            border-radius: .25rem;
+        }
+    </style>
+}
+
+@Html.Hidden("hdnUsuarioId", Model.UserId)
+@Html.Hidden("hdnControllerName", Model.ControllerName)
+@Html.Hidden("hdnAreaName", Model.AreaName)
+@Html.Hidden("hdnEmpresaId")
+<header class="section-header" style="padding:0 0 10px">
+    <div class="tbl">
+        <div class="tbl-row">
+            <div class="tbl-cell">
+                <h5>  @Model.MenuNameSelected </h5>
+            </div>
+        </div>
+    </div>
+</header>
+<section class="card" id="areaBody">
+
+    <div class="col-lg-12">
+        &nbsp;
+        <ol class="breadcrumb" style="display:none">
+            <li><a href="@Url.Action("Index","Dashboard", new { Area = "" })">Painel Inicial</a></li>
+            <li id="areaNameLi"><a href="#">  @Model.MenuNameSelected </a></li>
+            <li class="active" id="actionName"></li>
+        </ol>
+
+
+    </div>
+    <div class="card-block">
+
+
+
+        @*<div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+
+                    <div class="caminho_pao">
+                        <div style="padding:11px 0px 0px 9px" class="alignleft">
+                            <button type="button" class="btn btn-inline  btn-sm" id="btnNovoRegistro">Novo Registro</button>
+                        </div>
+
+                        <h4 class="text-right" style="padding:9px 0px 0px 0px">
+                            <a class="btn btn-inline btn-secondary btn-sm " role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                Pesquisa avançada&nbsp;&nbsp;
+                            </a>
+                        </h4>
+                    </div>
+
+
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+
+
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label for="txtFilterNome" class="form-label">Nome</label>
+                                            <input name="txtFilterNome" id="txtFilterNome"
+                                                   type="text"  maxlength="100"
+                                                   placeholder="Nome"
+                                                   class="form-control">
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label for="txtFilterEmail" class="form-label">E-mail</label>
+                                            <input name="txtFilterEmail" id="txtFilterEmail"
+                                                   type="text" maxlength="100"
+                                                   placeholder="E-mail"
+                                                   class="form-control">
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label for="txtFilterCPFCNPJ" class="form-label">CPF/CNPJ</label>
+                                            <input name="txtFilterCPFCNPJ" id="txtFilterCPFCNPJ"
+                                                   type="text"
+                                                   placeholder="CPF/CNPJ"
+                                                   class="form-control">
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <label for="txtFilterTelefone" class="form-label">Telefone</label>
+                                            <input name="txtFilterTelefone" id="txtFilterTelefone"
+                                                   type="text"
+                                                   placeholder="Telefone"
+                                                   class="form-control telefone">
+                                        </fieldset>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group"></fieldset>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group">
+                                            <button type="button" id="btnFilter" name="btnFilter" class="btn btn-inline btn-primary">Filtrar</button>
+                                            <button type="button" id="btnClear" name="btnClear" class="btn btn-inline btn-default">Limpar</button>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <fieldset class="form-group"></fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>*@
+
+
+
+        <table id="tbGrid" class="display table table-bordered" cellspacing="0" width="100%">
+            <colgroup>
+                <col style="width: 33px !important;" />
+
+                <col style="width: %" />
+                <col style="width: %" />
+                <col style="width: %" />
+            </colgroup>
+            <thead>
+                <tr>
+                    @*<th>
+                            <div class="checkbox checkbox-only" style="text-wrap:none;overflow-wrap:inherit">
+                                <input id="datatable-checkbox-0" data-index="0" name="btSelectItem" type="checkbox" value="0" />
+                                <label for="datatable-checkbox-0"></label>
+                            </div>
+
+                        </th>*@
+                    <th></th>
+
+                    <th>Logotipo</th>
+                    <th class="col_sort" col_order="1">Nome</th>
+                    <th>Chave Integração</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <nav class="pager">
+            <div id="pageMessage"></div>
+            <ul class="pagination">
+            </ul>
+        </nav>
+    </div>
+</section>
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalRemove">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                Deseja remover esse item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmRemove">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-sm"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="mySmallModalLabel"
+     aria-hidden="true" id="modalLogin">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="modal-close" data-dismiss="modal" aria-label="Close">
+                    <i class="font-icon-close-2"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Confirmação</h4>
+            </div>
+            <div class="modal-body" id="modalBodyMessage">
+                Deseja se logar com este usuário?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-rounded btn-default" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-rounded btn-primary" id="btnConfirmLogin">Ok</button>
+            </div>
+        </div>
+    </div>
+</div><!--.modal-->
+
+@section scripts {
+
+    <script type="text/javascript">
+        $('.panel-collapse').on('show.bs.collapse', function () {
+            $(this).siblings('.panel-heading').addClass('active');
+
+        });
+
+        $('.panel-collapse').on('hide.bs.collapse', function () {
+            $(this).siblings('.panel-heading').removeClass('active');
+
+        });
+    </script>
+    @Scripts.Render("~/Scripts/Cadastro/Clinica.Index.js?t=" + Guid.NewGuid())
+}

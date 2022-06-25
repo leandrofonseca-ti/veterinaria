@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+
+<table cellpadding="0" cellspacing="0" align="center" width="100%" style="background-color: #FFFFFF; border: 0; border-collapse: collapse; border-spacing: 0; margin: 0 auto; max-width: 100%; width: 100%; ">
+    <tr>
+        <td align="center" style="">
+            <table cellpadding="0" cellspacing="0" align="center" class="table-700" style="background-color: transparent; border: 0; border-collapse: collapse; border-spacing: 0; margin: 0 auto; max-width: 700px; width: 700px;">
+                <tr>
+                    <td style="font-size:30px;height:30px;line-height:30px;">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td align="center" class="mo-px-25" style="">
+                        <table cellpadding="0" cellspacing="0" align="center" class="table-640" style="border:0;border-collapse:collapse;border-spacing:0;margin:0 auto;max-width:640px;width:640px;">
+                            <tr>
+                                <td align="center" style="font-size:0;">
+                                    <table cellpadding="0" cellspacing="0" align="center" width="100%" style="border:0;border-collapse:collapse;border-spacing:0;">
+                                        <tr>
+                                            <td align="center" style="padding:0;padding-bottom:30px;">
+                                                @{
+
+                                                    var nomeoulogo = "";
+                                                    if (ViewData["imagemCompany"].ToString() == "")
+                                                    {
+                                                        nomeoulogo = $"<label>{ViewData["imagemCompanyNome"].ToString()}</label>";
+                                                    }
+                                                    else
+                                                    {
+                                                        nomeoulogo = $"<img style='max-height:85px' src='{ViewData["imagemCompany"].ToString()}'/>";
+                                                    }
+
+                                                }
+                                                @Html.Raw(nomeoulogo);
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mo-h-30" style="font-size:15px;height:15px;line-height:15px;">&nbsp;</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
