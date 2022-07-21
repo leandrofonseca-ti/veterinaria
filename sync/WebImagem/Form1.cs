@@ -71,7 +71,7 @@ namespace WebImagem
             {
                 SqliteConnection sqlite_con = new SqliteConnection(dbConnectionString);
                 sqlite_con.Open();
-                string query = "select count(*) as Total from tb_pacientes;";
+                string query = "select count(*) as Total from tb_pacientes  WHERE Sincronizado = 'FALSE';";
                 SqliteCommand sqlite_cmd = new SqliteCommand(query, sqlite_con);
                 SqliteDataReader dr = sqlite_cmd.ExecuteReader();
                 if (dr.Read())
@@ -95,7 +95,7 @@ namespace WebImagem
             {
                 SqliteConnection sqlite_con = new SqliteConnection(dbConnectionString);
                 sqlite_con.Open();
-                string query = "select count(*) as Total from tb_pacientes;";
+                string query = "select count(*) as Total from tb_pacientes WHERE Sincronizado = 'FALSE';";
                 SqliteCommand sqlite_cmd = new SqliteCommand(query, sqlite_con);
                 SqliteDataReader dr = sqlite_cmd.ExecuteReader();
                 if (dr.Read())
@@ -162,13 +162,8 @@ namespace WebImagem
                     using (SqliteConnection sqlite_con = new SqliteConnection(dbConnectionString))
                     {
                         sqlite_con.Open();
-                        string query = "select count(*) as Total from tb_pacientes;";
-                        /*
-                        if (!String.IsNullOrEmpty(codes))
-                        {
-                            query = $"select count(*) as Total from tb_pacientes WHERE ID not in ({codes});";
-                        }*/
-
+                        string query = "select count(*) as Total from tb_pacientes WHERE Sincronizado = 'FALSE';";
+                       
                         SqliteCommand sqlite_cmd = new SqliteCommand(query, sqlite_con);
                         SqliteDataReader dr = sqlite_cmd.ExecuteReader();
                         if (dr.Read())
@@ -196,12 +191,8 @@ namespace WebImagem
                         using (SqliteConnection sqlite_con = new SqliteConnection(dbConnectionString))
                         {
                             sqlite_con.Open();
-                            string query = "select * from tb_pacientes;";
-
-                            //if (String.IsNullOrEmpty(codes))
-                            //{
-                            //    query = $"select * from tb_pacientes WHERE ID not in ({codes});";
-                            //}
+                            string query = "select * from tb_pacientes  WHERE Sincronizado = 'FALSE';";
+ 
 
                             SqliteCommand sqlite_cmd = new SqliteCommand(query, sqlite_con);
                             SqliteDataReader dr = sqlite_cmd.ExecuteReader();
@@ -310,6 +301,10 @@ namespace WebImagem
                         backgroundWorker1.RunWorkerAsync(exames);
                         progressBar1.PerformStep();
                     }
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum arquivo para sincronização!");
                 }
             }
         }
@@ -517,6 +512,7 @@ namespace WebImagem
                 //TarefaLonga(20);
                 var isok = Calculate(exame);
 
+                AtualizarExameBancoVeiculo(exame.ID, true);
                 listagem.Add(isok ? 1 : 0);
                 //incrementa o progresso do backgroundWorker
                 //a cada passagem do loop.
@@ -565,6 +561,32 @@ namespace WebImagem
                 Syncronizado = true,
                 Log = log
             });
+        }
+
+        private void AtualizarExameBancoVeiculo(int id, bool status)
+        {
+            var setup = new SetupService().Carregar();
+            string dbConnectionString = $@"Data Source={setup.String_de_conexao};Cache=Shared;";
+
+            try
+            {
+
+                using (SqliteConnection sqlite_con = new SqliteConnection(dbConnectionString))
+                {
+                    sqlite_con.Open();
+                    string query = $"UPDATE tb_pacientes SET Sincronizado = 'TRUE' WHERE ID = {id};";
+
+                    SqliteCommand sqlite_cmd = new SqliteCommand(query, sqlite_con);
+                    var result = sqlite_cmd.ExecuteNonQuery();
+
+                    sqlite_con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
         }
 
         /// <summary>
