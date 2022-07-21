@@ -14,6 +14,7 @@ using System.Web.Security;
 
 namespace PortalVet.Controllers
 {
+    [RequireHttps]
     public class AdminController : BaseController
     {
 
@@ -36,6 +37,7 @@ namespace PortalVet.Controllers
 
 
         // GET: Admin
+        
         public ActionResult Index()
         {
             //var empresa = new Data.Service.EmpresaService().CarragaPorSubdominio(Request.Url.Host);
